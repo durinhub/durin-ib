@@ -1,0 +1,320 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 13, 2017, 9:39:27 PM
+    Author     : Durin
+*/
+:root{
+    --iblight-bgcolor: #fffff0;
+    --iblight-assunto: #761c19;
+    --iblight-fio-subpost: #e8fdfc;
+    --iblight-fio-img-div-bgcolor: #c8dddc;
+    --iblight-fio-img-div-border: 1px dashed #c8dddc;
+    --iblight-a-responder: #000;
+    --iblight-a-responder-hover: #000;
+    --iblight-green-text: #648123;
+    --iblight-pink-text: #ea4c4c;
+    --iblight-orange-text: #ff8247;
+    --iblight-modpost: #ff0600;
+    --iblight-ban-msg: #ff0000;
+    --iblight-div-indice-bgcolor: #e8fdfc;
+    --iblight-div-indice-border: 1px dashed #c8dddc;
+    --iblight-catalogo-post-div-border: 2px solid #000;
+    --iblight-anonpost-title: #006600;
+    --iblight-mini-btn: #006600;
+    --iblight-mini-btn-bgcolor: #b8cdcc;
+    --iblight-form-post-file-input-box-bgcolor: #e8fdfc;
+    --iblight-form-post-file-input-box-border: #c8dddc;
+    --iblight-sage-text: #761c19;
+    --iblight-span-vermelhotexto: #af0a0f;
+    --iblight-post-conteudo: #333;
+    --iblight-msg-strong: #333;
+    --iblight-modal-close-btn: #000;
+    --iblight-a-nro-post: #376cff;
+
+    --ibdark-bgcolor: #222222;
+    --ibdark-assunto: #ff453e;
+    --ibdark-fio-subpost: #014357;
+    --ibdark-fio-img-div-bgcolor: #0b5a72;
+    --ibdark-fio-img-div-border: 1px dashed #0b5a72;
+    --ibdark-a-responder: #fff;
+    --ibdark-a-responder-hover: #fff;
+    --ibdark-green-text: #ccff5d;
+    --ibdark-pink-text: #ea4c4c;
+    --ibdark-orange-text: #ff8247;
+    --ibdark-modpost: #ff00d4;
+    --ibdark-ban-msg: #ae00ff;
+    --ibdark-div-indice-bgcolor: #014357;
+    --ibdark-div-indice-border: 1px dashed #014357;
+    --ibdark-catalogo-post-div-border: 2px solid #999;
+    --ibdark-anonpost-title: #0ae4d9;
+    --ibdark-mini-btn: #31b6eb;
+    --ibdark-mini-btn-bgcolor: #565f5f;
+    --ibdark-form-post-file-input-box-bgcolor: #014357;
+    --ibdark-form-post-file-input-box-border: #014357;
+    --ibdark-sage-text: #ff453e;
+    --ibdark-span-vermelhotexto: #ff0000;
+    --ibdark-post-conteudo: #ddd;
+    --ibdark-msg-strong: #333;
+    --ibdark-modal-close-btn: #fff;
+    --ibdark-a-nro-post: #85a5fc;
+
+    --yotsuba-bgscale: #ffe url('/storage/res/fade-yotsuba.png') repeat-x 50% 0%;
+    --yotsuba-bgcolor: #ffe;
+    --yotsuba-assunto: #761c19;
+    --yotsuba-fio-subpost: #f0e0d6;
+    --yotsuba-fio-img-div-bgcolor: #00000000;
+    --yotsuba-fio-img-div-border: 1px dashed #00000000;
+    --yotsuba-a-responder: #fff;
+    --yotsuba-a-responder-hover: #fff;
+    --yotsuba-green-text: #648123;
+    --yotsuba-pink-text: #ea4c4c;
+    --yotsuba-orange-text: #ff8247;
+    --yotsuba-modpost: #ff0600;
+    --yotsuba-ban-msg: #ff0000;
+    --yotsuba-div-indice-bgcolor: #f0e0d6;
+    --yotsuba-div-indice-border: 1px dashed #f0e0d6;
+    --yotsuba-catalogo-post-div-border: 2px solid #999;
+    --yotsuba-anonpost-title: #117743;
+    --yotsuba-mini-btn: #f0e0d6;
+    --yotsuba-mini-btn-bgcolor: #800000;
+    --yotsuba-form-post-file-input-box-bgcolor: #EA8;
+    --yotsuba-form-post-file-input-box-border: #EA8;
+    --yotsuba-sage-text: #761c19;
+    --yotsuba-span-vermelhotexto: #ff0000;
+    --yotsuba-post-conteudo: #800000;
+    --yotsuba-msg-strong: #800000;
+    --yotsuba-modal-close-btn: #800000;
+    --yotsuba-a-nro-post: #0000ff;
+
+    --yotsubab-bgscale: #ffe url('/storage/res/fade-yotsubab.png') repeat-x 50% 0%;
+    --yotsubab-bgcolor: #eef2ff;
+    --yotsubab-assunto: #761c19;
+    --yotsubab-fio-subpost: #d6daf0;
+    --yotsubab-fio-img-div-bgcolor: #ddd;
+    --yotsubab-fio-img-div-border: 1px dashed #aaa;
+    --yotsubab-a-responder: #fff;
+    --yotsubab-a-responder-hover: #fff;
+    --yotsubab-green-text: #648123;
+    --yotsubab-pink-text: #ea4c4c;
+    --yotsubab-orange-text: #ff8247;
+    --yotsubab-modpost: #ff0600;
+    --yotsubab-ban-msg: #ff0000;
+    --yotsubab-div-indice-bgcolor: #d6daf0;
+    --yotsubab-div-indice-border: 1px dashed #d6daf0;
+    --yotsubab-catalogo-post-div-border: 2px solid #999;
+    --yotsubab-anonpost-title: #117743;
+    --yotsubab-mini-btn: #bdbee4;
+    --yotsubab-mini-btn-bgcolor: #25359c;
+    --yotsubab-form-post-file-input-box-bgcolor: #98e;
+    --yotsubab-form-post-file-input-box-border: #98e;
+    --yotsubab-sage-text: #761c19;
+    --yotsubab-span-vermelhotexto: #ff0000;
+    --yotsubab-post-conteudo: #000;
+    --yotsubab-msg-strong: #000;
+    --yotsubab-modal-close-btn: #000;
+    --yotsubab-a-nro-post: #000;
+
+}
+
+.rainbow {
+    -webkit-animation: rainbow 5s infinite;
+}
+
+@-webkit-keyframes rainbow{
+  0%{color: rgb(255, 0, 0);}
+ 10%{color: rgb(255, 38, 0);}
+ 20%{color: rgb(255, 94, 0);}
+ 30%{color: rgb(238, 255, 0);}
+ 40%{color: rgb(145, 255, 0);}
+ 50%{color: rgb(0, 255, 115);}
+ 60%{color: rgb(0, 195, 255);}
+ 70%{color: rgb(0, 140, 255);}
+ 80%{color: rgb(55, 20, 255);}
+ 90%{color: rgb(204, 0, 255);}
+100%{color: rgb(255, 0, 76);}
+}
+
+.ibnav{
+    margin-bottom: 50px;
+}
+
+.ibnavl{
+    float: left;
+}
+
+.ibnavr{
+    float: right;
+}
+
+.novo-post-form-item{
+    margin: 15px;
+}
+
+.mini-btn-form{
+    width: 0; 
+    display: inline;
+}
+
+.fio{
+    padding: 20px;
+}
+
+.fio-subpost{
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+    
+}
+
+.fio-subpost-mini{
+    z-index: 100;
+    border: 2px solid #999;
+}
+
+.fio-img-div img{
+    display: block;
+}
+
+.fio-img-div{
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.a-nro-post:hover{
+    cursor: pointer;
+}
+
+#toggleConf:hover{
+    cursor: pointer;
+}
+
+.a-responder{
+    text-decoration: none;
+}
+
+.a-responder:hover{
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.board-header{
+    font-weight: bold;
+}
+
+.modpost{
+    font-weight: bold;
+    display: inline;
+    
+}
+
+.ban-msg{
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.div-indice{
+    font-size: 17px;
+    border-radius: 25px;
+}
+
+#admin-buttons li{
+    list-style-type: none;
+    padding: 3px;
+}
+
+.footer-text{
+    font-size: 10px;
+}
+
+.catalogo-post-div{
+    display: inline-table; 
+    margin: 5px; 
+    width: 170px;
+    height: 200px;
+}
+
+.anonpost-title{
+    font-weight: bold; 
+    font-size: 18px;
+}
+
+.mini-btn{
+    border-radius: 6px;
+    border-bottom-style: solid;
+    padding: 2px;
+    font-weight:bold;
+    
+}
+.mini-btn:hover{
+    cursor: pointer;
+    text-decoration:none;
+}
+
+.form-post-file-input-box{
+    font-size: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-top: 15px;
+}
+
+.paginador{
+    font-size: 20px;
+}
+
+.noticia-data{
+    float: right;
+}
+
+.sage-text{
+    font-weight: bold;
+}
+
+span.spoiler {
+    background: #000;
+    color: #000;
+    padding: 0 1px;
+}
+
+span.spoiler:hover {
+    color: #fff;
+}
+
+span.vermelhotexto{
+    font-weight: bold;
+}
+
+.div-arquivos-anexos{
+    float: left; 
+    margin: 6px;
+}
+
+.vid-thumbnail:hover{
+    cursor: pointer;
+}
+
+.link-boarda:hover{
+    text-decoration: none;
+}
+
+.quebra-texto{
+    -ms-word-break: break-all;
+    word-break: break-all;
+
+     word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+        -ms-hyphens: auto;
+            hyphens: auto;
+}
+
+.ad-img{
+    max-width: 600px;
+    width: 100%;
+    max-height: 140px;
+    height: 100%;
+}

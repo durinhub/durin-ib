@@ -1,0 +1,22 @@
+/node_modules
+/public/hot
+public/storage/res/doacao-monero.png
+/storage/*.key
+/vendor
+/.idea
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+.env
+.env.prod
+.env.backup
+*~
+inserts.sql
+inserts_prod.sql
+infos\ host
+public/*.jpg
+public/*.png
+.directory
+todo
+app/Marmelos/Marmelos.php
