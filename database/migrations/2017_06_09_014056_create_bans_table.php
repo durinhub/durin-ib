@@ -21,7 +21,6 @@ class CreateBansTable extends Migration
             $table->string('motivo', 255);
             $table->bigInteger('post_id')->unsigned()->nullable();
             $table->primary(['ip', 'exp_date']);
-            $table->foreign('post_id')->references('id')->on('posts');
         });
     }
 
