@@ -605,26 +605,36 @@ class PostController extends Controller {
     
     private function deletaUmPost($post){
         if($post){
-            $arquivos = $post->arquivos;
-            PostHistoryController::store($post);
+            try{
+                \DB::beginTransaction();
+                $arquivos = $post->arquivos;
+                PostHistoryController::store($post);
 
-            if($post->reports){
-                \DB::table('reports')->where('post_id', '=', $post->id)->delete();
-            }
-            Cache::forget('reports');
-
-            foreach($arquivos as $arq){
-                $this->destroyArq($arq->filename);
-                \DB::table('arquivos')->where('post_id', '=', $post->id)->delete();
-            }
-            if($post->ytanexos){
-                foreach($post->ytanexos as $anexo)
-                {
-                    PostHistoryController::storeYtAnexo($anexo->ytcode, $post->id);
+                if($post->reports){
+                    \DB::table('reports')->where('post_id', '=', $post->id)->delete();
                 }
-                \DB::table('ytanexos')->where('post_id', '=', $post->id)->delete();
+                Cache::forget('reports');
+
+                foreach($arquivos as $arq){
+                    $this->destroyArq($arq->filename);
+                    \DB::table('arquivos')->where('post_id', '=', $post->id)->delete();
+                }
+                if($post->ytanexos){
+                    foreach($post->ytanexos as $anexo)
+                    {
+                        PostHistoryController::storeYtAnexo($anexo->ytcode, $post->id);
+                    }
+                    \DB::table('ytanexos')->where('post_id', '=', $post->id)->delete();
+                }
+                $post->delete();
+                \DB::commit();
             }
-            $post->delete();
+            catch (Throwable $e) {
+                $this->logAuthActivity("Erro ao deletaUmPost: " . $post->id . " msg: " . $e->getMessage(), ActivityLogClass::Erro);
+
+                \DB::rollback();
+            }
+
         }
     }
     
