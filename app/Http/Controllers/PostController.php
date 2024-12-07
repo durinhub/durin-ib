@@ -630,9 +630,9 @@ class PostController extends Controller {
                 \DB::commit();
             }
             catch (Throwable $e) {
+                \DB::rollback();
                 $this->logAuthActivity("Erro ao deletaUmPost: " . $post->id . " msg: " . $e->getMessage(), ActivityLogClass::Erro);
 
-                \DB::rollback();
             }
 
         }
