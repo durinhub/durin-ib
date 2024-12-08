@@ -26,7 +26,7 @@
 </div>
 
 <input type="text" class="novo-post-form-item form-control" maxlength="255" placeholder="Link(s) para vídeo(s) do youtube, separados por |" name="linkyoutube" >
-<textarea class="novo-post-form-item form-control" id="novo-post-conteudo" placeholder="Mensagem" rows="5" maxlength="26300" name="conteudo" @if(isset($requiredConteudo) && $requiredConteudo) required oninvalid="this.setCustomValidity('Por favor, fale algo para abrir um fio')" @endif></textarea>
+<textarea class="novo-post-form-item form-control" id="novo-post-conteudo" placeholder="Mensagem" rows="5" maxlength="26300" name="conteudo" @if(isset($requiredConteudo) && $requiredConteudo) required oninvalid="this.setCustomValidity('Por favor, fale algo para abrir um fio')" oninput="setCustomValidity('')" @endif></textarea>
 <p style="margin-left: 15px;"><span class="free-text">Mime types: image/jpeg, image/png, image/gif, video/webm, video/mp4, audio/mpeg</span></p>
 <div class="row">
     <div class="col-sm-3">
