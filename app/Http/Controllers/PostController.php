@@ -274,11 +274,8 @@ class PostController extends Controller {
 
                 \DB::beginTransaction();
                 foreach($posts as $post){
-                    $postFiltrado = $this->aplicaMarmelos($post->conteudo);
-                    if($postFiltrado !== $post->conteudo){
-                        $post->conteudo = $postFiltrado;
+                    $post->conteudo = $this->aplicaMarmelos($post->conteudo);
                         $post->save();
-                    }
                 }
                 \DB::commit();
 
