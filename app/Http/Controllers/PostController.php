@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Purifier;
-use Storage;
 use Redirect;
-use App\Models\Arquivo;
 use App\Models\Ytanexo;
 use App\Models\Anao;
 use App\Models\Report;
@@ -19,8 +17,6 @@ use App\Enums\ActivityLogClass;
 use App\Marmelos\Marmelos;
 use App\Enums\AdminRightsEnum;
 use Illuminate\Support\Facades\Validator;
-use FFMpeg;
-use Imagick;
 
 class PostController extends Controller {
 
@@ -339,101 +335,6 @@ class PostController extends Controller {
         return $anao;
     }
 
-    /**
-     * 
-     * Generate Thumbnail using Imagick class, fonte: https://stackoverflow.com/a/11376379
-     *  
-     * @param string $img
-     * @param string $width
-     * @param string $height
-     * @param int $quality
-     * @return boolean on true
-     * @throws Exception
-     * @throws ImagickException
-     */
-    private function generateThumbnail($img, $width, $height, $quality = 90)
-    {
-        if (is_file($img)) {
-            $imagick = new \Imagick($img);
-            $imagick->setImageFormat('jpeg');
-            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality($quality);
-            $imagick->thumbnailImage($width, $height, false, false);
-            if (file_put_contents($img . ".thumb.jpg", $imagick) === false) {
-                throw new Exception("Could not put contents.");
-            }
-            return true;
-        }
-        else {
-            throw new Exception("No valid image provided with {$img}.");
-        }
-    }
-
-    private function salvaThumb($post, $filename, $originalFilename, $spoilerVal){
-        $post->arquivos()->save(new Arquivo(
-            ['filename' => $filename, 
-            'mime' => "image/png", 
-            'spoiler' => $spoilerVal ,
-            'original_filename' => $originalFilename,
-            'thumb' => true
-        ]));
-    }
-    private function salvaArquivosDisco($request, $post, $arquivos){
-        foreach ($arquivos as $index => $arq) {
-            if ($arq->isValid()) {
-                // define o filename baseado no nro da postagem concatenado com a qtdade de arquivos updados
-                // exemplo, se fio nro 1234 e a postagem tem 3 arquivos, gerará 3 filenames do tipo 1234-0, 1234-1, 1234-2 seguido da extensão do arquivo
-                $contador = 0;
-                do{
-                    $nomeArquivo = $post->id . "-{$contador}"  . "." . $arq->extension();
-                        
-                    $contador++;
-                }while(Storage::disk('public')->exists($nomeArquivo));
-                    
-                // salva em disco na pasta public/storage
-                Storage::disk('public')->putFileAs('', $arq, $nomeArquivo);
-                $spoilerVal =  $request->input('arquivos-spoiler-' . ($index+1)) !== null ? $request->input('arquivos-spoiler-' . ($index+1)) === 'spoiler' : false;
-
-                // gera as thumbnails:
-                $mime = $arq->getMimeType();
-                if(!$spoilerVal && ($mime == "video/webm" || $mime == "video/mp4")){
-                    $sec = 1;
-                    $thumbnail = $nomeArquivo . '.thumb.png';
-                    
-                    $ffmpeg = FFMpeg\FFMpeg::create();
-                    $video = $ffmpeg->open(Storage::disk('public')->path($nomeArquivo));
-                    $frame = $video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds($sec));
-                    $frame->save(Storage::disk('public')->path($nomeArquivo) . '.thumb.png');
-
-                    $this->salvaThumb($post, $thumbnail, $arq->getClientOriginalName(), $spoilerVal);
-
-                } else if(!$spoilerVal && ($mime == "image/jpeg" || $mime == "image/png" || $mime == "image/gif")){
-                    try {
-                        $this->generateThumbnail(Storage::disk('public')->path($nomeArquivo), 200, 200, 65);
-
-                        $this->salvaThumb($post, $nomeArquivo . ".thumb.jpg", $arq->getClientOriginalName(), $spoilerVal);
-                    }
-                    catch (ImagickException $e) {
-                        echo $e->getMessage();
-                    }
-                    catch (Exception $e) {
-                        echo $e->getMessage();
-                    }
-                }
-                    
-                $post->arquivos()->save(new Arquivo(
-                ['filename' => $nomeArquivo, 
-                 'mime' => $mime, 
-                 'spoiler' => $spoilerVal ,
-                 'original_filename' => $arq->getClientOriginalName(),
-                 'filesize' => $arq->getSize()
-                ]));
-                Funcoes::consolelog('PostController::salvaArquivosDisco: filename: ' . $nomeArquivo . ' original filename ' . $arq->getClientOriginalName());
-                    
-            }
-        }
-    }
-
     private function salvaLinksYoutube($request, $post, $links){
         foreach($links as $link){
             if(preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $link, $match)){
@@ -444,18 +345,15 @@ class PostController extends Controller {
                     Funcoes::consolelog("tentou inserir links repetidos no mesmo post, ignorando o link");
                 }
                     
-            } else {
-                $this->postRollback($post);
-                return $this->redirecionaComMsg('erro_upload',
-                'Link inválido',
-                $request->headers->get('referer'));
-                    
-            }
+            } else 
+                throw new \Exception("Link inválido");
+            
         }
     }
     
-    protected function postRollback($post){
-        $this->destroy($post->board, $post->id);
+    protected function postAutoIncrementRollback(){
+        $maxId = \DB::table('posts')->max('id');
+        \DB::statement("ALTER TABLE posts AUTO_INCREMENT=$maxId");
     }
 
     // verifica se ultrapassou o nro máximo de posts para a board [configuracaos.num_max_fios]
@@ -621,7 +519,7 @@ class PostController extends Controller {
                 Cache::forget('reports');
 
                 foreach($arquivos as $arq){
-                    $this->destroyArq($arq->filename);
+                    (new ArquivoController)->destroyArq($arq->filename);
                     \DB::table('arquivos')->where('post_id', '=', $post->id)->delete();
                 }
                 if($post->ytanexos){
@@ -642,34 +540,7 @@ class PostController extends Controller {
 
         }
     }
-    
-    // deleta arquivo da pasta pública
-    public function destroyArq($filename){
-        Storage::disk('public')->delete($filename);
-    }
-    
-    // deleta arquivo da pasta pública e remove sua referência do banco de dados
-    public function destroyArqDb($siglaBoard, $filename, $redirect=true){
-        $filename = strip_tags(Purifier::clean($filename));
-        $siglaBoard = strip_tags(Purifier::clean($siglaBoard));
-        $arquivos = Arquivo::where('filename', 'like', '%' . $filename . '%')->get();
-        foreach($arquivos as $arq){
-            if($arq){
-                $thread = Post::where('id', '=', $arq->post_id)->first();
-                if($thread){
-                    Storage::disk('public')->delete($arq->filename);
-
-                    $arq->delete();
-                    $this->limpaCachePosts($siglaBoard, $thread->lead_id === null ? $thread->id : $thread->lead_id );
-
-                } else abort(400);
-            } else abort(400);
-        }  
-        $this->logAuthActivity("Deletou arquivo " . $filename . " da board " . $siglaBoard, ActivityLogClass::Info);  
-        return $this->redirecionaComMsg('post_deletado', 'Arquivo ' . $filename . ' deletado', Request()->headers->get('referer'));
-
-    }
-    
+            
     private function deveTrancarFio($postId)
     {
         return Post::where('lead_id', '=', $postId)->count() >= ConfiguracaoController::getAll()->num_max_posts_fio - 1;
@@ -806,30 +677,60 @@ class PostController extends Controller {
                 
             }
         }
-                
-        // salva o post em banco de dados
-        $post->save();
-        $this->limpaCachePosts($post->board, $post->lead_id);
 
-        // caso haja arquivos, salva-os em disco e seus paths em banco
-        if (!empty($arquivos)) {
-            $this->salvaArquivosDisco($request, $post, $arquivos);
-        } else if($links){ // caso haja links, salva suas referências em banco
-            $this->salvaLinksYoutube($request, $post, $links);
-        }
+        $arquivosStatus = false; // esta variavel ou é false ou é a lista de arquivos a serem rollbackeados caso necessário fazer um rollback
+        $arquivoController = new ArquivoController;
 
-        // se for post dentro de fio e não for sage, atualiza sua ultima atualização para que "bumpe"
-        if($post->lead_id && !($post->sage)){
-            $this->atualizaUpdatedAt($post->lead_id);
+        try{
+            // COMEÇA TRANSAÇÃO
+            \DB::beginTransaction();
+
+            // salva o post em banco de dados
+            $post->save();
+
+            if(!$this->limpaCachePosts($post->board, $post->lead_id)){
+                throw new \Exception("Erro ao limpar cache dos posts");
+            }
+
+            // caso haja arquivos, salva-os em disco e seus paths em banco
+            if (!empty($arquivos)) {
+                $arquivosStatus = $arquivoController->salvaArquivosDisco($request, $post, $arquivos);
+                if($arquivosStatus === false){
+                    throw new \Exception("Erro ao criar arquivos do post");
+                }
+
+
+            } else if($links){ // caso haja links, salva suas referências em banco
+                $this->salvaLinksYoutube($request, $post, $links);
+            }
+
+            // se for post dentro de fio e não for sage, atualiza sua ultima atualização para que "bumpe"
+            if($post->lead_id && !($post->sage)){
+                $this->atualizaUpdatedAt($post->lead_id);
+            }
+            
+            // verifica se ultrapassou o limite máximo de fios dentro da board
+            if(!$post->lead_id)
+                $this->verificaLimitePosts($post->board);
+            
+            // se chegou até aqui sem nenhuma exception 
+            // o fluxo foi de criação de novo post foi bem sucedido então podemos commitar
+            \DB::commit();
+
+            // prepara mensagem de aviso de post criado com sucesso
+            $flashmsg = $post->lead_id ? 'Post número ' . $post->id . ' criado' : 'Post número <a target="_blank" href="/' . $post->board . '/' . $post->id . '">' . $post->id . '</a> criado';
+            return $this->redirecionaComMsg('post_criado', $flashmsg,
+            $request->headers->get('referer'));
+
+        } // se qualquer erro ocorreu durante o begin transaction fazemos o rollback no banco de dados e dos arquivos criados
+        catch(\Exception $e){
+            \DB::rollback();
+            $arquivoController->fazRollbackArquivos($arquivosStatus);
+            $this->postAutoIncrementRollback();
+
+            $flashmsg = 'Erro ao criar nova postagem';
+            return $this->redirecionaComMsg('erro_upload', $flashmsg, $request->headers->get('referer'));
+
         }
-        
-        // verifica se ultrapassou o limite máximo de fios dentro da board
-        $this->verificaLimitePosts($post->board);
-        
-        // prepara mensagem de aviso de post criado com sucesso
-        $flashmsg = $post->lead_id ? 'Post número ' . $post->id . ' criado' : 'Post número <a target="_blank" href="/' . $post->board . '/' . $post->id . '">' . $post->id . '</a> criado';
-        return $this->redirecionaComMsg('post_criado', $flashmsg,
-        $request->headers->get('referer'));
-        
     }    
 }

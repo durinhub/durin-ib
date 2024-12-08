@@ -46,15 +46,21 @@ class Controller extends BaseController {
     }
     
     protected function limpaCachePosts($board, $thread){
-        $num_paginas = ConfiguracaoController::getAll()->num_posts_paginacao;
-        for($i = 0 ; $i < $num_paginas ; $i++ ){
-            Cache::forget('posts_board_' . $board);
-            Cache::forget('posts_board_' . $board . '_pag_' . $i);
-            Cache::forget('subposts_board_' . $board  . '_pag_' . $i);
+        try{
+            $num_paginas = ConfiguracaoController::getAll()->num_posts_paginacao;
+            for($i = 0 ; $i < $num_paginas ; $i++ ){
+                Cache::forget('posts_board_' . $board);
+                Cache::forget('posts_board_' . $board . '_pag_' . $i);
+                Cache::forget('subposts_board_' . $board  . '_pag_' . $i);
+            }
+            Cache::forget('posts_thread_' . $thread);
+            Cache::forget('posts_catalogo');
+            Cache::forget('posts_catalogo_sec');
+            
+            return true;
+        } catch(\Exception $e){
+            return false;
         }
-        Cache::forget('posts_thread_' . $thread);
-        Cache::forget('posts_catalogo');
-        Cache::forget('posts_catalogo_sec');
     }
     
     public function banirUsuario(Request $request){

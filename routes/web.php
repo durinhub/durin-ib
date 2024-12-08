@@ -15,6 +15,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConfiguracaoController;
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ArquivoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -81,7 +83,7 @@ Route::group(['middleware'=>['auth']], function(){
         ->where('siglaBoard', '[a-zA-Zç]{1,10}')
         ->where('val', '(1|0)');
     
-    Route::get('/boards/deleteimg/{siglaBoard}/{filename}', [PostController::class, 'destroyArqDb'])
+    Route::get('/boards/deleteimg/{siglaBoard}/{filename}', [ArquivoController::class, 'destroyArqDb'])
         ->where('filename', '[0-9\-]+\.[a-zA-Z0-9]+')
         ->where('siglaBoard', '[a-zA-Zç]{1,10}');
         
