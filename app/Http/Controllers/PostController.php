@@ -246,6 +246,11 @@ class PostController extends Controller {
         if((is_array($arquivos) && sizeof($arquivos) >  $num_max_arq_post) || ($links && sizeof($links) >  $num_max_arq_post ) ){
             return 'Número máximo de arquivos ou links do youtube permitidos: ' . $num_max_arq_post;
         }
+
+        // verifica se o post está completamente vazio, sem arquivo, sem conteudo
+        if(!$request->conteudo && !$links && !$request->file('arquivos')){
+            return 'Post vazio';
+        }
         
         // termina validação dos inputs
         return false;
