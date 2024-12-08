@@ -311,7 +311,7 @@ class PostController extends Controller {
         $post->lead_id = (strip_tags(Purifier::clean($request->insidepost)) === 'n' ? null : strip_tags(Purifier::clean($request->insidepost))); // caso o post seja dentro de um fio, define qual fio "pai" da postagem
         $post->board = strip_tags(Purifier::clean($request->siglaboard)); // board que o post pertence
         $request->conteudo = $this->setaRosaTextoTags($request->conteudo);
-        $post->conteudo = $this->aplicaMarmelos(strip_tags(Purifier::clean($request->conteudo)));
+        $post->conteudo = preg_replace('/^[\pZ\pC]+|[\pZ\pC]+$/u', '', $this->aplicaMarmelos(strip_tags(Purifier::clean($request->conteudo))));
         $post->sage = strip_tags(Purifier::clean($request->sage)) === 'sage'; // define se o post foi sageado ou não
         $post->mostra_countryflag = strip_tags(Purifier::clean($request->mostra_countryflag)) === 'mostra_countryflag' || $post->board === 'int'; // define se mostra ou não a countryflag
         $post->pinado = false; // define se a thread está pinada, por padrão, não
