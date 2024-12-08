@@ -30,7 +30,7 @@
 @if (Session::has('erro_upload'))
 
     <div class="alert alert-warning" role="alert">
-        <p><strong class="msg-strong">Erro ao criar post:</strong> {{ Session::get('erro_upload') }}</p>
+        <p><strong class="msg-strong">Post não criado:</strong> {{ Session::get('erro_upload') }}</p>
     </div>
 
 @endif
