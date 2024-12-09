@@ -29,7 +29,7 @@ class PostHistoryController extends Controller
             $history->mostra_countryflag = $post->mostra_countryflag;
             $history->save();
         } catch (\Illuminate\Database\UniqueConstraintViolationException  $e) {
-            (new Controller)->logAuthActivity("Erro ao inserir histórico do post " . $post->id . " msg: " . $e->getMessage(), ActivityLogClass::Erro);
+            (new Controller)->logAuthActivity("Erro ao inserir histórico do post " . $post->id, ActivityLogClass::Erro);
             return false;
         }
         return true;
