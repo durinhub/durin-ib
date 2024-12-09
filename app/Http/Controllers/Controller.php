@@ -62,14 +62,32 @@ class Controller extends BaseController {
             return false;
         }
     }
+
+    public function geraPermaban($ip, $motivo){
+        try{
+            \DB::beginTransaction();
+            $ban = new Ban;
+
+            $ban->ip = $ip;        
+            $ban->exp_date = Carbon::now()->addYears(100);
+            $ban->motivo = $motivo;
+
+            $ban->save(); 
+            \DB::commit();       
+            Cache::forget('bans_gerais');
+        } catch(\Exception $e){
+            \DB::rollback();
+        }
+    }
     
-    public function banirUsuario(Request $request){
+    public function banirUsuarioRequest(Request $request){
         
         $ban = new Ban;
         $ban->ip = \App\Models\Post::find(strip_tags(Purifier::clean($request->idpost)))->anao->ip();
         $hours = (float) strip_tags(Purifier::clean($request->nro_horas));
         $days = (float) strip_tags(Purifier::clean($request->nro_dias));
         $ehPermaban = strip_tags(Purifier::clean($request->permaban)) === 'permaban';
+        $banfiles = strip_tags(Purifier::clean($request->banfiles)) === 'banfiles';
         
         if($hours == 0 && $days == 0 && !$ehPermaban){
             return $this->redirecionaComMsg('ban', 'Erro ao banir usuário: deve-se colocar um tempo de banimento ou permaban', $request->headers->get('referer'));
@@ -89,11 +107,17 @@ class Controller extends BaseController {
         $ban->motivo = strip_tags(Purifier::clean($request->motivo));
         
         $ban->save();
+
+        if($banfiles){
+            (new ArquivoController)->baneEDeletaArquivosPost($post);
+        }
+
         $this->logAuthActivity("Baniu usuário " . $ban->ip . " por post " . $ban->post_id, ActivityLogClass::Info);
         Cache::forget('bans_gerais');
         $this->limpaCachePosts($post->board, $post->lead_id === null ? $post->id : $post->lead_id );
         
-        return \Redirect::to($request->headers->get('referer'));
+        return $this->redirecionaComMsg('ban', "Banido anão que fez o post $post->id", $request->headers->get('referer'));
+
     }
     
     public function estaBanido($ip, $siglaBoard=null){

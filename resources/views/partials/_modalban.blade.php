@@ -13,8 +13,9 @@
                     <div class="col-sm-10">
                         {{ csrf_field() }}
                         <input type="text" class="novo-post-form-item form-control" maxlength="255" placeholder="Motivo" name="motivo">
-                        Permaban: <input type="checkbox" class="novo-post-form-item" value="permaban" name="permaban">
-
+                        Permaban: <input type="checkbox" class="novo-post-form-item" value="permaban" name="permaban"><br>
+                        Blacklistar <strong>todos</strong> arquivos anexos ao post: <input type="checkbox" class="novo-post-form-item" value="banfiles" name="banfiles">
+                        <br><small><i>O Blacklist faz futuros posts com o mesmo arquivo gerarem um ban automaticamente ao postador</i></small>
                         <input type="number" class="novo-post-form-item form-control" placeholder="Qtdade de horas" min="1" max="24" name="nro_horas">
                         <input type="number" class="novo-post-form-item form-control" placeholder="Qtdade de dias" min="1" name="nro_dias">
 

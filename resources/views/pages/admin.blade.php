@@ -221,6 +221,19 @@
             </div>
         @endif
 
+        @if (Auth::user()->canDo(App\Enums\AdminRightsEnum::ApplyFiltersPastPosts))
+            <br>
+            <div class="row">
+                <div class="col-sm-12 div-indice">
+                    <form action="{{ route('arquivos.hashes') }}" method="post">
+                        <h3>Atualiza hash dos arquivos sem hash</h3>
+                        {{ csrf_field() }}
+                        <input type="submit" class="btn btn-warning" value="Aplicar"><br><br>
+                    </form>
+                </div>
+            </div>
+        @endif
+
     </div> <!-- container-fluid -->
 @endsection
 

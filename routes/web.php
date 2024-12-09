@@ -100,7 +100,7 @@ Route::group(['middleware'=>['auth']], function(){
         ->where('id', '[0-9]+');
         
     Route::get('/admin', [PagesController::class, 'getAdmPage']);
-    Route::post('/userban', [Controller::class, 'banirUsuario'])
+    Route::post('/userban', [Controller::class, 'banirUsuarioRequest'])
         ->name('bans.userban');
     
     Route::post('/nova_noticia', [NoticiaController::class, 'store'])
@@ -165,6 +165,10 @@ Route::group(['middleware'=>['auth']], function(){
 
     Route::post('/aplica_filtros_posts', [PostController::class, 'aplicaFiltros'])
         ->name('posts.filters');
+
+    Route::post('/atualiza_hash_arquivos', [ArquivoController::class, 'atualizaHashArquivosAusentes'])
+        ->name('arquivos.hashes');
+        
 });
 
 Auth::routes();

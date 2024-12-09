@@ -12,7 +12,7 @@ class Arquivo extends Model
     public $incrementing = false;
     
     protected $fillable = [
-        'filename', 'mime', 'spoiler', 'original_filename', 'filesize', 'thumb'
+        'filename', 'mime', 'spoiler', 'original_filename', 'filesize', 'thumb', 'sha256'
     ];
     
     public function post(){

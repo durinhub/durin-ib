@@ -22,4 +22,5 @@ enum AdminRightsEnum: int {
     case ManageAds = 16;
     case SeeActivityLogs = 17;
     case ApplyFiltersPastPosts = 18;
+    case UpdateFileHashes = 19;
 }

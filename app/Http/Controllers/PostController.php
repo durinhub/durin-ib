@@ -241,6 +241,14 @@ class PostController extends Controller {
                 return 'É necessário postar pelo menos com um arquivo ou um link do youtube';
             }
         }
+
+        if($arquivos){
+            $ip = strip_tags(Purifier::clean($request->server('REMOTE_ADDR')));
+            $arquivoController = new ArquivoController;
+            if($arquivoController->verificaHashesProibidos($arquivos, $ip)){
+                return 'Requisição inválida';
+            }
+        }
         
         $num_max_arq_post = ConfiguracaoController::getAll()->num_max_arq_post;
         // verifica se há mais arquivos/links que o máximo permitido
