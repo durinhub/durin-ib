@@ -14,7 +14,7 @@
     </a>
     @include('partials._deletepost', ['siglaBoard' => $siglaBoard, 'postIdDel' => $post->id, $viewOnly])                    
     @if(Auth::check())
-    <a class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalBan"><span data-toggle="tooltip" data-placement="top" title="Banir usuário" class="glyphicon glyphicon-ban-circle"></span></a>  
+    <a class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalBan"><span data-toggle="tooltip" data-placement="top" title="Banir usuário">[Banir]</span></a>  
     @endif
     <br>
 

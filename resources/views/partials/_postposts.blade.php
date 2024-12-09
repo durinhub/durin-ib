@@ -34,7 +34,7 @@
         @endif
     <a class="mini-btn btn-mover-post" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalMoverPost"><span data-toggle="tooltip" data-placement="top" title="Mover postagem" class="glyphicon glyphicon-circle-arrow-right"></span></a> 
     @endif
-    <a data-toggle="modal" data-placement="top" title="Banir usuário" class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-target="#modalBan"><span class="glyphicon glyphicon-ban-circle"></span></a> 
+    <a data-toggle="modal" data-placement="top" title="Banir usuário" class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-target="#modalBan"><span>[Banir]</span></a> 
 
 @endif <br>
 <br>
