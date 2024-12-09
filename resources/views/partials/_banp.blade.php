@@ -1,0 +1,1 @@
+<p class="ban-msg">(@if($ban->motivo) {{ $ban->motivo }} @else O anão foi minerar carvão @endif)</p>

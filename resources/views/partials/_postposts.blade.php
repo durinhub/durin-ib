@@ -53,7 +53,7 @@
         <span class="post-conteudo quebra-texto">{!! $post->conteudo !!}</span>
     </div>
 </div>
-@if($post->ban) <p class="ban-msg">({{ $post->ban->motivo }})</p>  @endif
+@if($post->ban) @include('partials._banp', ['ban' => $post->ban])  @endif
 @if($ind !== 0) </div> @endif
 @endforeach
 </div>

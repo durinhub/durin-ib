@@ -37,6 +37,6 @@
             @endif
         </div>
     </div>
-    @if($post->ban) <p class="ban-msg">({{ $post->ban->motivo }})</p>  @endif
+    @if($post->ban) @include('partials._banp', ['ban' => $post->ban])  @endif
     <br>
 </div>
