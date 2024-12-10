@@ -20,3 +20,4 @@ public/*.png
 .directory
 todo
 app/Marmelos/Marmelos.php
+composer.lock
