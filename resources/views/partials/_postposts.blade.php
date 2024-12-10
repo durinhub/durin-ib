@@ -11,7 +11,7 @@
 @endif
 <strong class="assunto">{{ $post->assunto }} </strong> 
  <i>{{ $post->data_post }}</i>
- <u>Nro <a class="a-nro-post">{{ $post->id }}</a></u>
+ <u>Nro <a class="a-nro-post" href="{{ Request::url() }}#div-form">{{ $post->id }}</a></u>
  
 <a class="mini-btn btn-report" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalReport"><span data-toggle="tooltip" data-placement="top" title="Denunciar" class="glyphicon glyphicon-exclamation-sign"></span></a> 
 @if($ind === 0) 
