@@ -73,8 +73,7 @@ class Controller extends BaseController {
             $ban->motivo = $motivo;
 
             $ban->save(); 
-            \DB::commit();       
-            Cache::forget('bans_gerais');
+            \DB::commit();
         } catch(\Exception $e){
             \DB::rollback();
         }
@@ -101,7 +100,6 @@ class Controller extends BaseController {
         
         if( strip_tags(Purifier::clean($request->board)) !== 'todas'){
             $ban->board = strip_tags(Purifier::clean($request->board));
-            Cache::forget('bans_board_' . $ban->board);
         }
         
         $ban->motivo = strip_tags(Purifier::clean($request->motivo));
@@ -113,7 +111,6 @@ class Controller extends BaseController {
         }
 
         $this->logAuthActivity("Baniu usuário " . $ban->ip . " por post " . $ban->post_id, ActivityLogClass::Info);
-        Cache::forget('bans_gerais');
         $this->limpaCachePosts($post->board, $post->lead_id === null ? $post->id : $post->lead_id );
         
         return $this->redirecionaComMsg('ban', "Banido anão que fez o post $post->id", $request->headers->get('referer'));
@@ -122,24 +119,9 @@ class Controller extends BaseController {
     
     public function estaBanido($ip, $siglaBoard=null){
         if($siglaBoard===null){
-            $chave = 'bans_gerais';
-            if(Cache::has($chave)){
-                $bans = Cache::get($chave);
-            }
-            else{
-                $bans = \DB::table('bans')->where('ip', '=', $ip)->where('board', '=', '-')->orderBy('exp_date', 'desc')->get();
-                Cache::forever($chave, $bans);
-            }
-            
-        } else{
-            $chave = 'bans_board_' . $siglaBoard;
-            if(Cache::has($chave)){
-                $bans = Cache::get($chave);
-            }
-            else{
-                $bans = \DB::table('bans')->where('ip', '=', $ip)->where('board', '=', $siglaBoard)->orderBy('exp_date', 'desc')->get();
-                Cache::forever($chave, $bans);
-            }
+            $bans = \DB::table('bans')->where('ip', '=', $ip)->where('board', '=', '-')->orderBy('exp_date', 'desc')->get();
+        } else {
+            $bans = \DB::table('bans')->where('ip', '=', $ip)->where('board', '=', $siglaBoard)->orderBy('exp_date', 'desc')->get();
         }
         if(count($bans)>0) {
             $banTime = Carbon::parse($bans[0]->exp_date);
