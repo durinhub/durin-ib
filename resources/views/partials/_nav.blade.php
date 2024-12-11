@@ -12,7 +12,8 @@
 
     <div class="ibnavr">
         [
-        <a data-toggle="modal" data-target="#modalConf" id="toggleConf">Conf</a>
+        <a href="/stats">Stats</a>
+        / <a data-toggle="modal" data-target="#modalConf" id="toggleConf">Conf</a>
         / <a href="/">Home</a>
         / <a href="/catalogo{{ ( isset($secretas) && $secretas ? '?secretas=1': '') }}">Catalogo</a>
         @if(Auth::check()) 

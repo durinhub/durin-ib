@@ -29,6 +29,18 @@ class PagesController extends Controller
                 ->withSecretas(Auth::check());
     }
     
+    public function getStats(){
+        $statsController = new StatsController;
+
+        $ppd = $statsController->postsPorDia();
+        //$ppdb = $statsController->postsPorDiaBoard();
+
+        return view('pages.stats')
+            ->with('ppd',$ppd)
+            //->with('ppdb',$ppdb)
+            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+    }
+
     public function getBoard($siglaBoard){
         $this->setaBiscoito();
         $board = $this->boardExiste($siglaBoard);

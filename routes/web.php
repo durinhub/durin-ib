@@ -67,6 +67,9 @@ Route::middleware([xFrameOptionsHeader::class,VerifyHeaders::class])->group(func
         
     Route::get('/login', [PagesController::class, 'getLogin'])
         ->middleware('throttle:6,1,directory');
+
+    Route::get('/stats', [PagesController::class, 'getStats'])
+        ->middleware('throttle:45,1,directory');
 });
 
 Route::group(['middleware'=>['auth']], function(){
