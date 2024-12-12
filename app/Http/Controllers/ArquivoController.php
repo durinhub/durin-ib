@@ -82,7 +82,7 @@ class ArquivoController extends Controller
     }
 
     public function atualizaHashArquivosAusentes(){
-        if(Auth::user()->canDo(AdminRightsEnum::ApplyFiltersPastPosts)){
+        if(Auth::user()->canDo(AdminRightsEnum::UpdateFileHashes)){
             $arquivos = Arquivo::where('sha256', '=', '-')->get();
             $counter = 0;
             $total = count(Arquivo::all());

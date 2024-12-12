@@ -221,7 +221,7 @@
             </div>
         @endif
 
-        @if (Auth::user()->canDo(App\Enums\AdminRightsEnum::ApplyFiltersPastPosts))
+        @if (Auth::user()->canDo(App\Enums\AdminRightsEnum::UpdateFileHashes))
             <br>
             <div class="row">
                 <div class="col-sm-12 div-indice">
