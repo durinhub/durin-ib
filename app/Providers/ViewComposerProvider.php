@@ -19,7 +19,8 @@ class ViewComposerProvider extends ServiceProvider
         {
             $view->with([
                 'boards' => BoardController::getAll(),
-                'configuracaos' => ConfiguracaoController::getAll()
+                'configuracaos' => ConfiguracaoController::getAll(),
+                'nomeib' => ConfiguracaoController::getAll()->nomeib
             ]);
         });
         

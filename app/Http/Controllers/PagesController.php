@@ -25,7 +25,6 @@ class PagesController extends Controller
         return view('pages.indice')
                 ->with('regras', $regras)
                 ->with('noticias', $noticias)
-                ->with('nomeib', ConfiguracaoController::getAll()->nomeib)
                 ->withSecretas(Auth::check());
     }
     
@@ -36,9 +35,8 @@ class PagesController extends Controller
         //$ppdb = $statsController->postsPorDiaBoard();
 
         return view('pages.stats')
-            ->with('ppd',$ppd)
             //->with('ppdb',$ppdb)
-            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+            ->with('ppd',$ppd);
     }
 
     public function getPosterMap(){
@@ -46,8 +44,7 @@ class PagesController extends Controller
         $dadosMapaDePosts = $statsController->getDadosMapaDePosts();
         
         return view('pages.mapadeposts')
-            ->with('dadosMapaDePosts', $dadosMapaDePosts)
-            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+            ->with('dadosMapaDePosts', $dadosMapaDePosts);
 
     }
 
@@ -149,7 +146,7 @@ class PagesController extends Controller
         Funcoes::consolelog('PagesController::getCatalogo');
         $this->setaBiscoito();
         $posts = PostController::pegaPostsCatalogo($request->secretas);
-        return view('pages.catalogo')->with('nomeib', ConfiguracaoController::getAll()->nomeib)
+        return view('pages.catalogo')
         ->withPosts($posts)->withSecretas($request->secretas || Auth::check());
     }
     
@@ -157,8 +154,7 @@ class PagesController extends Controller
         $this->setaBiscoito();
         if($this->temBiscoitoAdmin()){
             Funcoes::consolelog('PagesController::getLogin');
-            return view('auth.login')
-            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+            return view('auth.login');
         } else {
             Funcoes::consolelog('PagesController::getLogin erro: não tem biscoito admin');
             abort(404);
@@ -169,8 +165,7 @@ class PagesController extends Controller
         $this->setaBiscoito();
         if($this->temBiscoitoAdmin() && Auth::user()->canDo(AdminRightsEnum::RegisterAdmin)){
             Funcoes::consolelog('PagesController::getRegister');
-            return view('auth.register')
-            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+            return view('auth.register');
         } else {
             Funcoes::consolelog('PagesController::getRegister erro: não tem biscoito admin');
             abort(404);
