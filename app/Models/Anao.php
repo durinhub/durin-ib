@@ -13,8 +13,14 @@ class Anao extends Model
     public function ips(){
         return $this->hasMany(AnaoIp::class,'biscoito','biscoito');
     }
+    
+    public function posts(){
+        return $this->hasMany(Post::class,'biscoito','biscoito');
+    }
 
-    public function ip(): string{
-        return $this->ips()->orderBy('created_at', 'desc')->first()->ip;
+    public function scopeIpAtual(): string{
+        $ips = $this->ips()->orderBy('created_at', 'desc')->get();
+        $first = $ips->first();
+        return $first->ip;
     }
 }

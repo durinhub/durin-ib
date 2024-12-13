@@ -19,6 +19,15 @@
         <div class="col-sm-2"></div>
     </div>
 
+    <br>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 text-center">
+            <h2><a href="/mapadeposts">Mapa de posts <span class="glyphicon glyphicon-link"></span></a></h2>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
 </div>
 
 @endsection

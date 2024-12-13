@@ -12,7 +12,7 @@ class AnaoIp extends Model
     protected $primaryKey = ['biscoito','ip'];
     public $incrementing = false;
     
-    public function anoes(){
+    public function anaos(){
         return $this->belongsToMany(Anao::class,'anao_ips', 'biscoito', 'biscoito');
     }
 }

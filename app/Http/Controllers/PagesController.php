@@ -41,6 +41,16 @@ class PagesController extends Controller
             ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
     }
 
+    public function getPosterMap(){
+        $statsController = new StatsController;
+        $dadosMapaDePosts = $statsController->getDadosMapaDePosts();
+        
+        return view('pages.mapadeposts')
+            ->with('dadosMapaDePosts', $dadosMapaDePosts)
+            ->with('nomeib', ConfiguracaoController::getAll()->nomeib);
+
+    }
+
     public function getBoard($siglaBoard){
         $this->setaBiscoito();
         $board = $this->boardExiste($siglaBoard);

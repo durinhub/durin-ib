@@ -620,6 +620,21 @@ class PostController extends Controller {
         abort(400);
     }
 
+    public function geraDadosMapaDePosts(Request $request){
+        if(Auth::user()->canDo(AdminRightsEnum::GeneratePostMapData)){
+            $posts = Post::where('mostra_countryflag', '=', true)->where('modpost', '=', false)->get();
+
+            if($posts){
+                $statsController = new StatsController;
+                foreach($posts as $post){
+                    $statsController->salvaDadosMapaDePosts($post);
+                }
+            }
+            return $this->redirecionaComMsg('sucesso_admin', "Dados do mapa de posts atualizados com sucesso", Request()->headers->get('referer'));
+
+        } else abort (404);
+    }
+
     /**
      * Valida e cria uma nova postagem
      *
@@ -722,6 +737,13 @@ class PostController extends Controller {
             // verifica se ultrapassou o limite máximo de fios dentro da board
             if(!$post->lead_id)
                 $this->verificaLimitePosts($post->board);
+
+            // se o post tem contryflag, salva dados de localização para mostrar no mapa de posts
+            if($post->mostra_countryflag && !$post->modpost){
+                $statsController = new StatsController;
+
+                $statsController->salvaDadosMapaDePosts($post);
+            }
             
             // se chegou até aqui sem nenhuma exception 
             // o fluxo foi de criação de novo post foi bem sucedido então podemos commitar

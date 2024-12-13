@@ -70,6 +70,9 @@ Route::middleware([xFrameOptionsHeader::class,VerifyHeaders::class])->group(func
 
     Route::get('/stats', [PagesController::class, 'getStats'])
         ->middleware('throttle:45,1,directory');
+
+    Route::get('/mapadeposts', [PagesController::class, 'getPosterMap'])
+        ->middleware('throttle:45,1,directory');
 });
 
 Route::group(['middleware'=>['auth']], function(){
@@ -171,6 +174,9 @@ Route::group(['middleware'=>['auth']], function(){
 
     Route::post('/atualiza_hash_arquivos', [ArquivoController::class, 'atualizaHashArquivosAusentes'])
         ->name('arquivos.hashes');
+
+    Route::post('/gera_dados_mapa_de_posts', [PostController::class, 'geraDadosMapaDePosts'])
+        ->name('posts.mapdata');
         
 });
 

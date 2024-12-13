@@ -18,18 +18,8 @@ class AnaoController extends Controller
         || preg_match('/^192\.168\..+$/', $ip)
         || preg_match('/^10\..+$/', $ip)
         ) return array('br','mg'); // se teste em rede local/loopback, retorna brasil
-
-        $url = "http://ip-api.com/json/{$ip}";
-        $ch = curl_init();
-    
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-        $response = curl_exec($ch);
-    
-        curl_close($ch);
-    
-        $data = json_decode($response, true);
+  
+        $data = $this->getDadosIp($ip);
     
         if (isset($data['proxy']) && $data['proxy']) {
             return array('on',null);

@@ -22,7 +22,7 @@ class Post extends Model
     
     public function anao()
     {
-        return $this->hasOne('App\Models\Anao', 'biscoito', 'biscoito');
+        return $this->hasOne(Anao::class, 'biscoito', 'biscoito');
     }
     
     public function ban()

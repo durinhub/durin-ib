@@ -234,6 +234,19 @@
             </div>
         @endif
 
+        @if (Auth::user()->canDo(App\Enums\AdminRightsEnum::GeneratePostMapData))
+            <br>
+            <div class="row">
+                <div class="col-sm-12 div-indice">
+                    <form action="{{ route('posts.mapdata') }}" method="post">
+                        <h3>Gerar dados do mapa de posts</h3>
+                        {{ csrf_field() }}
+                        <input type="submit" class="btn btn-warning" value="Aplicar"><br><br>
+                    </form>
+                </div>
+            </div>
+        @endif
+
     </div> <!-- container-fluid -->
 @endsection
 
