@@ -17,14 +17,6 @@ return new class extends Migration
                         from posts p
                         group by date_format(p.created_at, 'Y%M%DD')
                         order by p.created_at asc");
-
-        // \DB::statement("CREATE VIEW posts_por_dia_board AS
-        //                 select count(*) as nr, 
-        //                 p.board, 
-        //                 date_format(p.created_at,'%Y-%m-%d') as dia 
-        //                 from posts p
-        //                 group by date_format(p.created_at, 'Y%M%DD'),p.board
-        //                 order by p.created_at asc");
     }
 
     /**
@@ -33,6 +25,5 @@ return new class extends Migration
     public function down(): void
     {
         \DB::statement("DROP VIEW posts_por_dia");
-        //\DB::statement("DROP VIEW posts_por_dia_board");
     }
 };

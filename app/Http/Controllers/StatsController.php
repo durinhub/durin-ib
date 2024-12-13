@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PostsPorDia;
-//use App\Models\PostsPorDiaBoard;
+use App\Models\PostsPorDiaBoard;
 use App\Models\DadoMapaDePosts;
 use App\Models\Anao;
 use Purifier;
@@ -14,9 +14,10 @@ class StatsController extends Controller
     public function postsPorDia(){
         return PostsPorDia::all();         
     }
-    // public function postsPorDiaBoard(){
-    //     return PostsPorDiaBoard::all();         
-    // }
+
+    public function postsPorDiaBoard(){
+        return PostsPorDiaBoard::all();         
+    }
 
     public function salvaDadosMapaDePosts($post){
         $anao = $post->anao;

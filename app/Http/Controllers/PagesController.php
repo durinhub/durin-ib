@@ -32,10 +32,15 @@ class PagesController extends Controller
         $statsController = new StatsController;
 
         $ppd = $statsController->postsPorDia();
-        //$ppdb = $statsController->postsPorDiaBoard();
+        $ppdb = $statsController->postsPorDiaBoard();
+
+        $boardsComPosts = array_unique($ppdb->pluck(['sigla'])->all());
+        $dias = array_unique($ppdb->pluck(['dia'])->all());
 
         return view('pages.stats')
-            //->with('ppdb',$ppdb)
+            ->with('boardsComPosts',$boardsComPosts)
+            ->with('dias',$dias)
+            ->with('ppdb',$ppdb)
             ->with('ppd',$ppd);
     }
 
