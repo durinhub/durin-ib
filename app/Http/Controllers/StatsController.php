@@ -47,7 +47,9 @@ class StatsController extends Controller
         $regionCode = $anao->regioncode;
         $dado->countryregioncode = $countryCode . $regionCode;
 
-        $dado->save();
+        if($dado->latitude && $dado->longitude){
+            $dado->save();
+        }
     }
     public function getDadosMapaDePosts(){
         return DadoMapaDePosts::all(['countryregioncode','latitude','longitude']);
