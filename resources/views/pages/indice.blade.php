@@ -8,7 +8,7 @@
 @stop
 
 @section('conteudo')
-<div class="container-fluid">
+<div class="container-fluid snow-container">
 
 @if(isset($regras))
 @include('partials._rulesdiv')

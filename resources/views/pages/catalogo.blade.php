@@ -8,7 +8,7 @@
 @stop
 
 @section('conteudo')
-<div class="container-fluid">
+<div class="container-fluid snow-container">
     <div class="row">
         <div class="col-sm-4"></div>
         
