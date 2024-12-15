@@ -36,7 +36,9 @@
     @endif
     <a data-toggle="modal" data-placement="top" title="Banir usuário" class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-target="#modalBan"><span>[Banir]</span></a> 
 
-@endif <br>
+@endif 
+<div class="divAddCitacoes" id="addCitacoes{{ $post->id }}"></div>
+<br>
 <br>
 <div class="row">
     <div class="col-sm-12">

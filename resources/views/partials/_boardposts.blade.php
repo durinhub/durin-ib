@@ -19,6 +19,7 @@
      <a class="mini-btn btn-report" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalReport"><span data-toggle="tooltip" data-placement="top" title="Denunciar" class="glyphicon glyphicon-exclamation-sign"></span></a> 
      @include('partials._deletepost', ['siglaBoard' => $siglaBoard, 'postIdDel' => $post->id, 'viewOnly' => false])   
      <a data-toggle="tooltip" data-placement="top" title="Responder" class="mini-btn" href="/boards/{{ $siglaBoard }}/{{ $post->id }}">[Responder]</a> 
+     <div class="divAddCitacoes" id="addCitacoes{{ $post->id }}"></div>
      <br>
     @if(Auth::check())
         @if($post->pinado)

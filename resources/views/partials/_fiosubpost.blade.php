@@ -16,6 +16,7 @@
     @if(Auth::check())
     <a class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalBan"><span data-toggle="tooltip" data-placement="top" title="Banir usuário">[Banir]</span></a>  
     @endif
+    <div class="divAddCitacoes" id="addCitacoes{{ $post->id }}"></div>
     <br>
 
     <div class="row">

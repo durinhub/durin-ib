@@ -191,6 +191,18 @@ $(document).ready(function(){
         }
     });
 
+    $('.nro-post-ref').each((index, element) => {
+        teste = $(element).parent();
+        idPostCitado = $(element).data('target-post');
+        idPostCitante = $(element).parent().parent().parent().parent().parent().attr('id');
+
+        divPostCitado = $(`#${idPostCitado}`);
+        localAddRef = divPostCitado.children(`#addCitacoes${idPostCitado}`)[0];
+
+        addCitacao = `<a class="nro-post-ref" href="#${idPostCitante}" data-target-post="${idPostCitante}">&gt;&gt;${idPostCitante}</a>`
+        $(addCitacao).appendTo(`#addCitacoes${idPostCitado}`);
+    });
+
     $('.nro-post-ref').hover(function(event){
         idPostCitado = $(event.target).data('target-post');
         ehOp = $(`#${idPostCitado}`).hasClass("fio");

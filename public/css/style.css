@@ -318,3 +318,7 @@ span.vermelhotexto{
     max-height: 140px;
     height: 100%;
 }
+
+.divAddCitacoes{
+    display: inline;
+}
