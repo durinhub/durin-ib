@@ -122,9 +122,9 @@ var criaPostFlutuante = function(event,remoteData=false){
     novaDiv.appendTo(`#${idPostCitador}`);
 
 
-    $(`#mini-subpost-${idPostCitado}`).css('position', 'fixed');
-    $(`#mini-subpost-${idPostCitado}`).css('top', '10%');
-    $(`#mini-subpost-${idPostCitado}`).css('right', '60%');
+    $(`#mini-subpost-${idPostCitado}`).css('position', 'absolute');
+    $(`#mini-subpost-${idPostCitado}`).css('top', event.pageY);
+    $(`#mini-subpost-${idPostCitado}`).css('left', event.pageX);
     $(`#mini-subpost-${idPostCitado}`).css('padding', '5px');
     setaTema(localStorage.getItem('tema'));
 }
