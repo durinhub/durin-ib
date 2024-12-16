@@ -7,12 +7,13 @@ use App\Models\PostsPorDia;
 use App\Models\PostsPorDiaBoard;
 use App\Models\DadoMapaDePosts;
 use App\Models\Anao;
+use Carbon\Carbon;
 use Purifier;
 
 class StatsController extends Controller
 {
     public function postsPorDia(){
-        return PostsPorDia::all();         
+        return PostsPorDia::whereDay('dia', '<', Carbon::today())->get();         
     }
 
     public function postsPorDiaBoard(){
