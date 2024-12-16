@@ -8,7 +8,13 @@ var addNovoInputFile = function(elem, max){
     
     if(fileInputs.length >= max || elem.files.length === 0)
         return;
-    
+
+    if(elem.files[0].size >= 10 * 1024 * 1024){
+        alert('Tamanho máximo de arquivo: 10MiB. Este arquivo tem:' +  Math.round((elem.files[0].size / 1024 / 1024) * 100) / 100  + "MiB");
+        $(elem).val(null);
+        return;
+    }
+
     var novoInput = "<div class=\"form-post-file-input-box\">";
     novoInput += "<input class=\"novo-post-form-item form-post-file-input\" name=\"arquivos[]\" type=\"file\" onchange=\"addNovoInputFile(this, " + max + ")\">";
     novoInput += "Spoiler <input name=\"arquivos-spoiler-" + (fileInputs.length + 1) + "\" type=\"checkbox\" value=\"spoiler\">"
