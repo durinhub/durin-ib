@@ -13,7 +13,7 @@ use Purifier;
 class StatsController extends Controller
 {
     public function postsPorDia(){
-        return PostsPorDia::whereDay('dia', '<', Carbon::today())->get();         
+        return PostsPorDia::whereDate('dia', '<', Carbon::today())->get();         
     }
 
     public function postsPorDiaBoard(){
