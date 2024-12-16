@@ -57,6 +57,17 @@ var trataTexto = function()
         var conteudo = $(this).html();
         $(this).html(aplicaRegexStringPost(conteudo));
     });
+
+    $('.nro-post-ref').each(function(index,element){
+        idPostCitado = $(element).data('target-post');
+        divPostCitado = $(`#${idPostCitado}`);
+        ehOp = $(`#${idPostCitado}`).hasClass("fio");
+        
+        if(ehOp){
+            $(element).append('(OP)');
+        }
+    });
+
 };
 
 var setaTema = function(tema){
