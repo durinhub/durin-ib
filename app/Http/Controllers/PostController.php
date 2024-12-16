@@ -142,21 +142,24 @@ class PostController extends Controller {
         // caso seja uma nova postagem fora de um fio
         if(strip_tags(Purifier::clean($request->insidepost)) === 'n'){
             $regras['conteudo'] = 'required|max:26300';
-            $regras['arquivos.*'] = 'required|mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg';
+            $regras['arquivos.*'] = 'required|mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg|max:10240';
             $msgs['arquivos.*.mimetypes'] = "Tipos de arquivos permitidos: jpeg, png, gif, webm, mp4, audio/mpeg";
             $msgs['arquivos.*.required'] = "É necessário pelo menos 1 arquivo";
+            $msgs['arquivos.*.max'] = "Tamanho máximo por arquivo: 10Mb";
             $msgs['conteudo.required'] = "É necessário uma mensagem para abrir um fio";
             $msgs['conteudo.max'] = "Tamanho máximo da mensagem: 26300 caracteres";
         }else if( preg_match('/^[0-9]+$/s',strip_tags(Purifier::clean($request->insidepost))) ) { // caso seja dentro de um fio, 
             if($request->conteudo){
                 $regras['conteudo'] = 'max:26300';
-                $regras['arquivos.*'] = 'mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg';
+                $regras['arquivos.*'] = 'mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg|max:10240';
                 $msgs['arquivos.*.mimetypes'] = "Tipos de arquivos permitidos: jpeg, png, gif, webm, mp4, audio/mpeg";
+                $msgs['arquivos.*.max'] = "Tamanho máximo por arquivo: 10Mb";
                 $msgs['conteudo.max'] = "Tamanho máximo da mensagem: 26300 caracteres";
             } else {
-                $regras['arquivos.*'] = 'required|mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg';
+                $regras['arquivos.*'] = 'required|mimetypes:image/jpeg,image/png,image/gif,video/webm,video/mp4,audio/mpeg|max:10240';
                 $msgs['arquivos.*.mimetypes'] = "Tipos de arquivos permitidos: jpeg, png, gif, webm, mp4, audio/mpeg";
                 $msgs['arquivos.*.required'] = "É necessário pelo menos 1 arquivo";
+                $msgs['arquivos.*.max'] = "Tamanho máximo por arquivo: 10Mb";
             }
         }
         if($configuracaos->captcha_ativado){
