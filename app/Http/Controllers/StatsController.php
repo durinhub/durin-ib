@@ -9,15 +9,24 @@ use App\Models\DadoMapaDePosts;
 use App\Models\Anao;
 use Carbon\Carbon;
 use Purifier;
+use Auth;
 
 class StatsController extends Controller
 {
     public function postsPorDia(){
-        return PostsPorDia::whereDate('dia', '<', Carbon::today())->get();         
+        if(Auth::check()){
+            return PostsPorDia::all();
+        } else { 
+            return PostsPorDia::whereDate('dia', '<', Carbon::today())->get();    
+        }       
     }
 
     public function postsPorDiaBoard(){
-        return PostsPorDiaBoard::all();         
+        if(Auth::check()){
+            return PostsPorDiaBoard::all();
+        } else {
+            return PostsPorDiaBoard::whereDate('dia', '<', Carbon::today())->get();
+        }
     }
 
     public function salvaDadosMapaDePosts($post){
