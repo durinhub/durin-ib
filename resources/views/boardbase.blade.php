@@ -36,15 +36,22 @@ function expandirImg(element){
 
 function expandirVid(element, divId){
     imgElement = $(element);
-    mimeType = imgElement.data("type")
-    newElement = "<video controls>"
+    mimeType = imgElement.data("type");
+    isSpoiler = $(imgElement).data("spoiler");
+    spoilerSrc = $(imgElement).data("spoiler-src");
 
-    newElement += "<source "
-    newElement += ` src="${imgElement.attr("src").replace(".thumb.png", "")}"`
-    newElement += ` type="${mimeType}"`
-    newElement += " />"
+    newElement = "<video controls>";
 
-    newElement += "</video>"
+    newElement += "<source ";
+    if(isSpoiler)
+        newElement += ` src="${spoilerSrc}"`;
+    else 
+        newElement += ` src="${imgElement.attr("src").replace(".thumb.png", "")}"`;
+
+    newElement += ` type="${mimeType}"`;
+    newElement += " />";
+
+    newElement += "</video>";
     imgElement.hide();
     $(newElement).appendTo(`#${divId}`);
 }
