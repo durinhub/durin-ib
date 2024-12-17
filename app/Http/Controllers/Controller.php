@@ -96,7 +96,7 @@ class Controller extends BaseController {
     public function banirUsuarioRequest(Request $request){
         
         $ban = new Ban;
-        $ban->ip = \App\Models\Post::find(strip_tags(Purifier::clean($request->idpost)))->anao->ip();
+        $ban->ip = \App\Models\Post::find(strip_tags(Purifier::clean($request->idpost)))->anao->ipAtual();
         $hours = (float) strip_tags(Purifier::clean($request->nro_horas));
         $days = (float) strip_tags(Purifier::clean($request->nro_dias));
         $ehPermaban = strip_tags(Purifier::clean($request->permaban)) === 'permaban';
