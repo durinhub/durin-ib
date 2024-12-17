@@ -92,6 +92,10 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('/boards/deleteimg/{siglaBoard}/{filename}', [ArquivoController::class, 'destroyArqDb'])
         ->where('filename', '[0-9\-]+\.[a-zA-Z0-9]+')
         ->where('siglaBoard', '[a-zA-Zç]{1,10}');
+    
+    Route::get('/boards/spoilimg/{siglaBoard}/{filename}', [ArquivoController::class, 'spoilaImg'])
+        ->where('filename', '[0-9\-]+\.[a-zA-Z0-9]+')
+        ->where('siglaBoard', '[a-zA-Zç]{1,10}');
         
     Route::get('/deleteregra/{id}', [RegraController::class, 'destroy'])
         ->where('id', '[0-9]+');

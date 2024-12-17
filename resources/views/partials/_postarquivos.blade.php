@@ -34,7 +34,8 @@
     </div>
     
     @if(Auth::check()) 
-    <a data-toggle="tooltip" data-placement="top" title="Deletar arquivo" href="/boards/deleteimg/{{ $siglaBoard }}/{{ $arq->filename }}" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a><br><br>
+    <a data-toggle="tooltip" data-placement="top" title="Deletar arquivo" href="/boards/deleteimg/{{ $siglaBoard }}/{{ $arq->filename }}" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a>
+    <a data-toggle="tooltip" data-placement="top" title="Colocar spoiler" href="/boards/spoilimg/{{ $siglaBoard }}/{{ $arq->filename }}" class="mini-btn"><span class="glyphicon glyphicon-eye-close"></span></a><br><br>
     @endif
     </div>
 @endforeach

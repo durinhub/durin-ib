@@ -240,4 +240,31 @@ class ArquivoController extends Controller
         return $this->redirecionaComMsg('post_deletado', 'Arquivo ' . $filename . ' deletado', Request()->headers->get('referer'));
 
     }
+
+    // coloca imagem como spoiler
+    public function spoilaImg($siglaBoard, $filename){
+        $filename = strip_tags(Purifier::clean($filename));
+        $siglaBoard = strip_tags(Purifier::clean($siglaBoard));
+        $arquivos = Arquivo::where('filename', 'like', '%' . $filename . '%')->get();
+        foreach($arquivos as $arq){
+            if($arq){
+                $thread = Post::where('id', '=', $arq->post_id)->first();
+                if($thread){
+                    if(!$arq->thumb){
+                        $arq->spoiler = true;
+                        $arq->save();
+                    } else {
+                        $arq->delete();
+                    }
+                    
+                    $this->limpaCachePosts($siglaBoard, $thread->lead_id === null ? $thread->id : $thread->lead_id );
+                } else abort(400);
+            } else abort(400);
+        }        
+        
+        $this->logAuthActivity("Colocou o arquivo $filename da board $siglaBoard como spoiler", ActivityLogClass::Info);  
+        return $this->redirecionaComMsg('sucesso_admin', "Arquivo $filename colocado como spoiler", Request()->headers->get('referer'));
+
+
+    }
 }
