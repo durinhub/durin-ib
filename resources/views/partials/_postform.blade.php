@@ -18,6 +18,7 @@
     <div class="col-sm-11">
         <div id="form-post-file-input-div">
             <div class="form-post-file-input-box">
+                <button type="button" class="close" onclick="limpaInputFile(this)">×</button>
                 <input class="novo-post-form-item form-post-file-input" name="arquivos[]" type="file" onchange="addNovoInputFile(this, {{ $configuracaos->num_max_arq_post }})">
                 <span class="free-text">Spoiler</span> <input name="arquivos-spoiler-1" type="checkbox" value="spoiler">
             </div>

@@ -16,6 +16,7 @@ var addNovoInputFile = function(elem, max){
     }
 
     var novoInput = "<div class=\"form-post-file-input-box\">";
+    novoInput += '<button type="button" class="close" onclick="limpaInputFile(this)">×</button>';
     novoInput += "<input class=\"novo-post-form-item form-post-file-input\" name=\"arquivos[]\" type=\"file\" onchange=\"addNovoInputFile(this, " + max + ")\">";
     novoInput += "Spoiler <input name=\"arquivos-spoiler-" + (fileInputs.length + 1) + "\" type=\"checkbox\" value=\"spoiler\">"
     novoInput += "</div>"
@@ -23,6 +24,12 @@ var addNovoInputFile = function(elem, max){
     $(novoInput).appendTo(".form-post #form-post-file-input-div");
     setaTema(localStorage.getItem('tema'));
 };
+
+var limpaInputFile = function(elem){
+    elem = $(elem).nextAll('input');
+    $(elem).val(null);
+    return;
+}
 
 var criaÇandom = function()
 {
