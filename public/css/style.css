@@ -150,6 +150,19 @@ and open the template in the editor.
     float: right;
 }
 
+@media (max-width: 650px) {
+    .ibnav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ibnavl, .ibnavr {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+}
+
 .novo-post-form-item{
     margin: 15px;
 }
