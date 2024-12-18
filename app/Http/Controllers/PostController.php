@@ -488,9 +488,12 @@ class PostController extends Controller {
 
         Validator::make($request->all(), $validationRules, $validationRulesMessages)->validate();
 
-        $this->destroy($request->siglaBoard, $request->postId);
-
+        if($this->destroy($request->siglaBoard, $request->postId)){
         return $this->redirecionaComMsg('post_deletado', 'Post ' . $request->postId . ' deletado', $request->headers->get('referer'));
+        } else {
+            return $this->redirecionaComMsg('ban', 'Não foi possível deletar este post', '/boards/' . $request->siglaBoard);
+        }
+    
     }
 
     // deleta uma postagem e dados relacionados a ele (links, arquivos)
@@ -512,10 +515,9 @@ class PostController extends Controller {
             
             $this->deletaUmPost($post);
             $this->limpaCachePosts($siglaBoard, $post->lead_id);
-            return Redirect::to('/boards/' . $siglaBoard );
-            
+            return true;
         } else {
-            return $this->redirecionaComMsg('ban', 'Não foi possível deletar este post', '/boards/' . $siglaBoard);
+            return false;
         }
     }
     
