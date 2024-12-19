@@ -274,6 +274,15 @@ and open the template in the editor.
     padding-top: 15px;
 }
 
+.form-post-file-input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
 .paginador{
     font-size: 20px;
 }

@@ -18,9 +18,13 @@
     <div class="col-sm-11">
         <div id="form-post-file-input-div">
             <div class="form-post-file-input-box">
-                <button type="button" class="close" onclick="limpaInputFile(this)">×</button>
-                <input class="novo-post-form-item form-post-file-input" name="arquivos[]" type="file" onchange="addNovoInputFile(this, {{ $configuracaos->num_max_arq_post }})">
-                <span class="free-text">Spoiler</span> <input name="arquivos-spoiler-1" type="checkbox" value="spoiler">
+                <div class="row">
+                    <div class="col-sm-8" onclick="selecionaArquivo(this)"><label for="arquivos[]"><span class="glyphicon glyphicon-open-file"></span> Escolha um arquivo</label></div>
+                    <div class="col-sm-2"><span class="free-text">Spoiler</span> <input name="arquivos-spoiler-1" type="checkbox" value="spoiler"></div>
+                    <div class="col-sm-2"><button type="button" class="close" onclick="limpaInputFile(this)"><span class="glyphicon glyphicon-remove-sign"></span></button></div>
+                </div>
+                <input class="novo-post-form-item form-post-file-input" name="arquivos[]" type="file" onchange="addNovoInputFile(this, {{ $configuracaos->num_max_arq_post }})" hidden>
+
             </div>
         </div>
     </div>

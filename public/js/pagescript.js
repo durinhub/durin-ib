@@ -16,18 +16,32 @@ var addNovoInputFile = function(elem, max){
     }
 
     var novoInput = "<div class=\"form-post-file-input-box\">";
-    novoInput += '<button type="button" class="close" onclick="limpaInputFile(this)">×</button>';
-    novoInput += "<input class=\"novo-post-form-item form-post-file-input\" name=\"arquivos[]\" type=\"file\" onchange=\"addNovoInputFile(this, " + max + ")\">";
-    novoInput += "Spoiler <input name=\"arquivos-spoiler-" + (fileInputs.length + 1) + "\" type=\"checkbox\" value=\"spoiler\">"
-    novoInput += "</div>"
+    novoInput += '<div class="row">';
+    novoInput += '<div class="col-sm-8" onclick="selecionaArquivo(this)"><label for="arquivos[]"><span class="glyphicon glyphicon-open-file"></span> Escolha um arquivo</label></div>';
+    novoInput += "<div class=\"col-sm-2\"><span class=\"free-text\">Spoiler</span> <input name=\"arquivos-spoiler-" + (fileInputs.length + 1) + "\" type=\"checkbox\" value=\"spoiler\"></div>";
+    novoInput += '<div class="col-sm-2"><button type="button" class="close" onclick="limpaInputFile(this)"><span class="glyphicon glyphicon-remove-sign"></span></button></div>'
+    novoInput += "</div>";
+    novoInput += "<input class=\"novo-post-form-item form-post-file-input\" name=\"arquivos[]\" type=\"file\" onchange=\"addNovoInputFile(this, " + max + ")\" hidden>";
+
+    novoInput += "</div>";
     
     $(novoInput).appendTo(".form-post #form-post-file-input-div");
     setaTema(localStorage.getItem('tema'));
+    $('.form-post-file-input').on('change', alteraNomeArquivoInputBox);
 };
 
+var limpaLabel = function(label){
+    $(label).html('<span class="glyphicon glyphicon-open-file"></span> Escolha um arquivo');
+}
+
 var limpaInputFile = function(elem){
-    elem = $(elem).nextAll('input');
+    row = $(elem).parent().parent();
+
+    elem = $(row).nextAll('input');
+    label = row.find('label')[0];
+
     $(elem).val(null);
+    limpaLabel(label);
     return;
 }
 
@@ -157,6 +171,45 @@ var deletaPostSto = function(postId){
     localStorage.removeItem(`data-post-${postId}`);
 }
 
+var selecionaArquivo = function(elem){
+    fileInput = $(elem).parent().parent().find('.form-post-file-input')[0];
+    fileInput.click();
+}
+
+var alteraNomeArquivoByInputBox = function(elem,fileName){
+
+    label = $(elem).parent().find('label')[0];
+
+    if( fileName )
+        $(label).html(fileName);
+    else
+        limpaLabel(label);
+}
+
+var alteraNomeArquivoInputBox = function(e){
+    var fileName = '';
+    fileName = e.target.value.split( '\\' ).pop();
+
+    parente = e.currentTarget.parentElement;
+    label = $(parente).find('label')[0];
+
+    if( fileName )
+        $(label).html(fileName);
+    else
+        limpaLabel(label);
+}
+
+$('.form-post-file-input').on('change', alteraNomeArquivoInputBox);
+
+var primeiroInputVazio = function(){
+    fileInputs = $('.form-post-file-input');
+    for(var i=0; i < fileInputs.length; i++)
+    {
+        if(fileInputs[i].files.length === 0)
+            return fileInputs[i];
+    }
+}
+
 $(document).ready(function(){
     $('.btn-ban').on('click', function(){
         $('#idPostInput').val($(this).data('id-post'));
@@ -202,15 +255,17 @@ $(document).ready(function(){
         var el = document.activeElement;
         if(el && (el.name === "assunto" || el.name === "linkyoutube" || el.name === "conteudo")){
             var isFirefox = typeof InstallTrigger !== 'undefined';
-            const inputs = document.getElementsByName('arquivos[]');
-            var inputToChange = inputs[inputs.length-1];
-
-            if(e.clipboardData.files.length > 0){
-                if(isFirefox)
-                    inputToChange.files = structuredClone(e.clipboardData.files);
-                else 
-                    inputToChange.files = e.clipboardData.files;
-                addNovoInputFile(inputToChange, 5);
+            var inputToChange = primeiroInputVazio();
+            
+            if(inputToChange){
+                if(e.clipboardData.files.length > 0){
+                    if(isFirefox)
+                        inputToChange.files = structuredClone(e.clipboardData.files);
+                    else 
+                        inputToChange.files = e.clipboardData.files;
+                    addNovoInputFile(inputToChange, 5);
+                    alteraNomeArquivoByInputBox(inputToChange, 'ClipboardImage.png');
+                }
             }
         }
     });
