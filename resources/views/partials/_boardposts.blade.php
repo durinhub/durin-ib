@@ -84,6 +84,7 @@
 @endif
 @endforeach
 
+@include('partials._divvoltatopo')
 @if(isset($paginador))
     <br>
     <div class="row">

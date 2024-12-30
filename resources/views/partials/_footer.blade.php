@@ -1,5 +1,5 @@
 <hr style="margin-top: 150px;">
-<div class="container-fluid">
+<div class="container-fluid" id="div-footer">
     <div class="row">
         <div class="col-sm-12 text-center footer-text">
             <img src="/storage/res/logo-ib.png">
