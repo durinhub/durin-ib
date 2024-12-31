@@ -5,6 +5,6 @@
     {{ csrf_field() }}
     <input type="hidden" name="siglaBoard" value="{{ $siglaBoard }}">
     <input type="hidden" name="postId" value="{{ $postIdDel }}">
-    <a href="javascript:deletaPostSto({{$postIdDel}});$('#deletepost{{$postIdDel}}').submit()" data-toggle="tooltip" data-placement="top" title="Deletar post" type="submit" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a> 
+    <a href="javascript:if(deletaPostSto({{$postIdDel}})){$('#deletepost{{$postIdDel}}').submit();}" data-toggle="tooltip" data-placement="top" title="Deletar post" type="submit" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a> 
 </form>
 @endif

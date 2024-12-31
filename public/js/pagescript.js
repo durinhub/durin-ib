@@ -168,7 +168,10 @@ var criaPostFlutuante = function(event,remoteData=false){
 }
 
 var deletaPostSto = function(postId){
-    localStorage.removeItem(`data-post-${postId}`);
+    if (confirm(`Tem certeza que gostaria de deletar o post ${postId}`)) {
+        localStorage.removeItem(`data-post-${postId}`);
+        return true;
+    } else return false;
 }
 
 var selecionaArquivo = function(elem){
