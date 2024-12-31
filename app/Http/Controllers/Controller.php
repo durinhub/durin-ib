@@ -163,14 +163,10 @@ class Controller extends BaseController {
         $userAgent = strip_tags(Purifier::clean($request->server('HTTP_USER_AGENT')));
         $remoteAddr = strip_tags(Purifier::clean($request->server('REMOTE_ADDR')));
         $hostname = gethostbyaddr($remoteAddr);
-        $accept_encoding = strip_tags(Purifier::clean($request->server('HTTP_ACCEPT_ENCODING')));
-        $accept_lang = strip_tags(Purifier::clean($request->server('HTTP_ACCEPT_LANGUAGE')));
         
         Funcoes::consolelog("Controller::geraBiscoito gerando biscoito com dados\n User Agent: "
         . $userAgent
         . "\nIp: " . $remoteAddr
-        . "\nAccept encoding: " . $accept_encoding
-        . "\nAccept language: " . $accept_lang
         . "\nHost by addr: " . $hostname);
 
         $stringGerarBiscoito = $userAgent
