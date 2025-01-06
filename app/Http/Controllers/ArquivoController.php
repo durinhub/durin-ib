@@ -99,11 +99,14 @@ class ArquivoController extends Controller
 
     }
 
-    public function proibeArquivoPorHash($hash){
+    public function proibeArquivoPorHash($filename, $hash){
         try{
             $hashProibido = new HashProibido;
             $hashProibido->sha256 = $hash;
             $hashProibido->save();
+
+            $this->logAuthActivity("Hash $hash colocado na blacklist, nome do arquivo: $filename", ActivityLogClass::Info);  
+
         } catch(\Illuminate\Database\UniqueConstraintViolationException $e){
             // ignora erro de hash repetido
         }
@@ -211,7 +214,7 @@ class ArquivoController extends Controller
             if($arquivos){
                 foreach($arquivos as $arq){
                     $this->deletaArquivosPorHash($arq->sha256);
-                    $this->proibeArquivoPorHash(hash: $arq->sha256);
+                    $this->proibeArquivoPorHash($arq->filename,$arq->sha256);
                     $this->limpaCachePosts($post->board, $post->lead_id === null ? $post->id : $post->lead_id );
                 }
             }
@@ -229,7 +232,7 @@ class ArquivoController extends Controller
                 $thread = Post::where('id', '=', $arq->post_id)->first();
                 if($thread){
                     $this->deletaArquivosPorHash($arq->sha256);
-                    $this->proibeArquivoPorHash($arq->sha256);
+                    $this->proibeArquivoPorHash($arq->filename, $arq->sha256);
 
                     $this->limpaCachePosts($siglaBoard, $thread->lead_id === null ? $thread->id : $thread->lead_id );
 
