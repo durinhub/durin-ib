@@ -167,12 +167,6 @@ var criaPostFlutuante = function(event,remoteData=false){
     setaTema(localStorage.getItem('tema'));
 }
 
-var deletaPostSto = function(postId){
-    if (confirm(`Tem certeza que gostaria de deletar o post ${postId}`)) {
-        localStorage.removeItem(`data-post-${postId}`);
-        return true;
-    } else return false;
-}
 
 var selecionaArquivo = function(elem){
     fileInput = $(elem).parent().parent().find('.form-post-file-input')[0];
@@ -213,9 +207,24 @@ var primeiroInputVazio = function(){
     }
 }
 
+var enviaFormModalDeletePost = function(elem){
+    var postId = $(elem).data('postid');
+    if(localStorage.getItem(`data-post-${postId}`)){
+        localStorage.removeItem(`data-post-${postId}`);
+    }
+}
+
 $(document).ready(function(){
     $('.btn-ban').on('click', function(){
         $('#idPostInput').val($(this).data('id-post'));
+    });
+
+    $('.btn-del-post').on('click', function(){
+        var postId = $(this).data('postid');
+
+        $('#aSubmitModalDeletePost').data('postid', postId);
+        $('#postIdInputModal').val(postId);
+        $('#postIdModalSpan').html(postId);
         
     });
     

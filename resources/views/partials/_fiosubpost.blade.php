@@ -12,7 +12,7 @@
     <a class="mini-btn btn-report" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalReport">
         <span data-toggle="tooltip" data-placement="top" title="Denunciar" class="glyphicon glyphicon-exclamation-sign"></span>
     </a>
-    @include('partials._deletepost', ['siglaBoard' => $siglaBoard, 'postIdDel' => $post->id, $viewOnly])                    
+    @include('partials._deletepost', ['postIdDel' => $post->id])                    
     @if(Auth::check())
     <a class="mini-btn btn-ban" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalBan"><span data-toggle="tooltip" data-placement="top" title="Banir usuário">[Banir]</span></a>  
     @endif

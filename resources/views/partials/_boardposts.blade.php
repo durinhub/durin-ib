@@ -17,7 +17,7 @@
      <u>Nro <a class="a-nro-post">{{ $post->id }}</a></u>
      <a class="mini-btn" onclick="hidePost({{ $post->id }})"><span class="glyphicon glyphicon-minus" title="Esconder post"></span></a>
      <a class="mini-btn btn-report" data-id-post="{{ $post->id }}" data-toggle="modal" data-target="#modalReport"><span data-toggle="tooltip" data-placement="top" title="Denunciar" class="glyphicon glyphicon-exclamation-sign"></span></a> 
-     @include('partials._deletepost', ['siglaBoard' => $siglaBoard, 'postIdDel' => $post->id, 'viewOnly' => false])   
+     @include('partials._deletepost', ['postIdDel' => $post->id])   
      <a data-toggle="tooltip" data-placement="top" title="Responder" class="mini-btn" href="/boards/{{ $siglaBoard }}/{{ $post->id }}">[Responder]</a> 
      <div class="divAddCitacoes" id="addCitacoes{{ $post->id }}"></div>
      <br>
@@ -67,7 +67,7 @@
     @if($sbtemp)
         @foreach($sbtemp as $sb)
             @if($k > sizeof($sbtemp) - ($configuracaos->num_subposts_post + 1))
-                @include('partials._fiosubpost', ['post' => $sb, 'viewOnly' => false])
+                @include('partials._fiosubpost', ['post' => $sb])
             @endif
             @php
                 $k += 1;

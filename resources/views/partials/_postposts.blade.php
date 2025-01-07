@@ -17,7 +17,7 @@
 @if($ind === 0) 
 <a data-toggle="tooltip" data-placement="top" title="Voltar" class="mini-btn" href="/boards/{{ $siglaBoard }}"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>  
 @endif 
-@include('partials._deletepost', ['siglaBoard' => $siglaBoard, 'postIdDel' => $post->id, 'viewOnly' => false])     
+@include('partials._deletepost', ['postIdDel' => $post->id])     
 @if(Auth::check()) 
     @if($ind === 0) 
         

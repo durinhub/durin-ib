@@ -28,6 +28,7 @@
 @endif
 
 @include('partials._modalreport')
+@include('partials._modaldeletepost')
 @endsection
 
 @section('adsbottom')

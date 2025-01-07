@@ -101,7 +101,6 @@ class PostController extends Controller {
         $post = $postsThread->where('id', '=', $postId)->first();
         if($post){
             return view('partials._fiosubpost')
-                ->withViewOnly(true)
                 ->withSiglaBoard($siglaBoard)
                 ->withPost($post);
         } else {

@@ -1,10 +1,9 @@
-@if($viewOnly)
-<a href="" data-toggle="tooltip" data-placement="top" title="Deletar post" type="submit" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a> 
-@else 
-<form action="{{ route('posts.destroy') }}" method="post" id="deletepost{{$postIdDel}}" class="mini-btn-form">
-    {{ csrf_field() }}
-    <input type="hidden" name="siglaBoard" value="{{ $siglaBoard }}">
-    <input type="hidden" name="postId" value="{{ $postIdDel }}">
-    <a href="javascript:if(deletaPostSto({{$postIdDel}})){$('#deletepost{{$postIdDel}}').submit();}" data-toggle="tooltip" data-placement="top" title="Deletar post" type="submit" class="mini-btn"><span class="glyphicon glyphicon-trash"></span></a> 
-</form>
-@endif
+<a 
+   data-toggle="modal" 
+   data-target="#modalDeletePost" 
+   data-placement="top" 
+   title="Deletar post" 
+   class="mini-btn btn-del-post" 
+   data-postid="{{$postIdDel}}">
+    <span class="glyphicon glyphicon-trash"></span>
+</a> 
