@@ -137,6 +137,29 @@ function expandirContrairConteudoPost(id){
 
 $(document).ready(function() { 
     atualizaEscondidos();
+
+    $('#form-novo-post').on('submit', function(event){
+        event.preventDefault();
+        valido = false;
+        arquivos = $('.form-post-file-input');
+        for(var i=0; i < arquivos.length; i++){
+            if(arquivos[i].files.length > 0){
+                valido = true;
+            }   
+        }
+        ytAnexos = $('#linkyoutube').val();
+        if(ytAnexos.trim() !== ''){
+            valido = true;
+        }
+
+        if(valido){
+            this.submit();
+        }
+        else{
+            alert("É necessário postar pelo menos com um arquivo ou um link do youtube");
+        }
+    })
+
 });
 
 </script>
