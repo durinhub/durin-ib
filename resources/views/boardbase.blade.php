@@ -138,28 +138,61 @@ function expandirContrairConteudoPost(id){
 $(document).ready(function() { 
     atualizaEscondidos();
 
-    $('#form-novo-post').on('submit', function(event){
-        event.preventDefault();
-        valido = false;
-        arquivos = $('.form-post-file-input');
-        for(var i=0; i < arquivos.length; i++){
-            if(arquivos[i].files.length > 0){
+    if(!$('#isPostShow').length){
+        $('#form-novo-post').on('submit', function(event){
+            event.preventDefault();
+            valido = false;
+            arquivos = $('.form-post-file-input');
+            for(var i=0; i < arquivos.length; i++){
+                if(arquivos[i].files.length > 0){
+                    valido = true;
+                }   
+            }
+            ytAnexos = $('#linkyoutube').val();
+            if(ytAnexos.trim() !== ''){
                 valido = true;
-            }   
-        }
-        ytAnexos = $('#linkyoutube').val();
-        if(ytAnexos.trim() !== ''){
-            valido = true;
-        }
+            }
 
-        if(valido){
-            this.submit();
-        }
-        else{
-            alert("É necessário postar pelo menos com um arquivo ou um link do youtube");
-        }
-    })
+            if(valido){
+                this.submit();
+            }
+            else{
+                alert("É necessário postar pelo menos com um arquivo ou um link do youtube");
+            }
+        });
+    } else {
+        $('#form-novo-post').on('submit', function(event){
+            event.preventDefault();
+            postVazio = true;
 
+            conteudoTxt = $('#novo-post-conteudo').val();
+
+            if(conteudoTxt.trim() !== ''){
+                postVazio = false;
+            }
+            
+            arquivos = $('.form-post-file-input');
+            for(var i=0; i < arquivos.length; i++){
+                if(arquivos[i].files.length > 0){
+                    postVazio = false;
+                }   
+            }
+
+            ytAnexos = $('#linkyoutube').val();
+            if(ytAnexos.trim() !== ''){
+                postVazio = false;
+            }
+
+            if(!postVazio){
+                this.submit();
+            }
+            else{
+                alert("Post vazio");
+            }
+
+        });
+
+    }
 });
 
 </script>

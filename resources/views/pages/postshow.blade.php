@@ -11,6 +11,7 @@
 
 @include('partials._boardpostheader')
 <hr>
+<div id="isPostShow" hidden></div>
 @include('partials._postposts')
 
 @if(Auth::check())
