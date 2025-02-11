@@ -73,6 +73,21 @@ class AnaoController extends Controller
         }
     }
 
+    public function atualizaUltimaSenhaUsada($anao, $senhadel){
+        try{
+            $anao->ultima_senhadel_usada = $senhadel;
+            $anao->save();
+        }catch(\Illuminate\Database\QueryException $e)
+        {
+            Funcoes::consolelog('AnaoController::atualizaUltimaSenhaUsada erro: ', $e->getMessage());
+        }
+    }
+
+    public function getAnaoByBiscoito($biscoito){
+        $anao = Anao::find($biscoito);
+        return $anao;
+    }
+
     public function existeAnaoDb($biscoito){
         return Anao::find($biscoito);
     }

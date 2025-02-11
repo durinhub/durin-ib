@@ -54,7 +54,7 @@ class PagesController extends Controller
     }
 
     public function getBoard($siglaBoard){
-        $this->setaBiscoito();
+        $anao = $this->setaBiscoito();
         $board = $this->boardExiste($siglaBoard);
         if($board){
             $posts = PostController::pegaFiosBoard($siglaBoard);
@@ -74,7 +74,8 @@ class PagesController extends Controller
                     ->with('ad2', AdsController::getRandom())
                     ->with('requiredConteudo', true)
                     ->withSecretas($board->secreta || Auth::check())
-                    ->with('nomeBoard', $board->nome);
+                    ->with('nomeBoard', $board->nome)
+                    ->with('anao', $anao);
             
         } else{
             Funcoes::consolelog('PagesController::getBoard Board não encontrada');
@@ -85,7 +86,7 @@ class PagesController extends Controller
     
     public function getThread($siglaBoard, $thread){
         Funcoes::consolelog('PagesController::getThread');
-        $this->setaBiscoito();
+        $anao = $this->setaBiscoito();
         
         $board = $this->boardExiste($siglaBoard);
         if(!$board){
@@ -118,7 +119,8 @@ class PagesController extends Controller
                 ->with('ad1', AdsController::getRandom())
                 ->with('ad2', AdsController::getRandom())
                 ->withSecretas($board->secreta || Auth::check())
-                ->with('nomeBoard', $board->nome);
+                ->with('nomeBoard', $board->nome)
+                ->with('anao', $anao);
         
     }
         

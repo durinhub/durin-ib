@@ -138,6 +138,12 @@ class PostController extends Controller {
         $regras['assunto'] = 'max:255';
         $msgs['assunto'] = "Máximo de 255 caracteres para o assunto";
         
+        $regras['senhadel'] = 'required|string|max:25|min:6';
+        $msgs['senhadel.max'] = "Máximo de 25 caracteres para a senha de deleção do post";
+        $msgs['senhadel.min'] = "Mínimo de 6 caracteres para a senha de deleção do post";
+        $msgs['senhadel.required'] = "É necessário fornecer uma senha de deleção do post";
+        $msgs['senhadel.string'] = "A senha de deleção deve ser uma string";
+        
         // caso seja uma nova postagem fora de um fio
         if(strip_tags(Purifier::clean($request->insidepost)) === 'n'){
             $regras['conteudo'] = 'required|max:26300';
@@ -330,6 +336,7 @@ class PostController extends Controller {
         $post->trancado = false; // define se o fio pode receber novos posts ou não
         // flag "modpost" definido pelo mod
         $post->modpost = $request->modpost && Auth::check() && strip_tags(Purifier::clean($request->modpost)) === 'modpost';
+        $post->senhadel = strip_tags(Purifier::clean($request->senhadel));
         
         return $post;
     }
@@ -461,13 +468,32 @@ class PostController extends Controller {
         abort(400);
     }
     
-    protected function podeDeletarFio($postId){
+    protected function podeDeletarPost($postId, $senhadel){
         $post = Post::find($postId);
         $bisc = $this->temBiscoito();
         if(!$post || !$bisc){
             return false;
         }
-        if(Auth::check() || $post->biscoito === $bisc)
+
+        if(Auth::check()) return $post; // se for MOD, sempre permite deletar o post
+
+        if($post->senhadel === '-') return false; // caso dos posts antigos antes da criação de senha de deleção
+
+        // Não permite OP deletar o próprio fio se ele conter mais de 20 respostas
+        if(!$post->lead_id){
+            $subposts = Post::where('lead_id', '=', $post->id)->get()->count(); // pega qtdade de respostas ao fio
+            if($subposts >= 20) return false;
+        }
+
+        // Não permite deletar post após 24 horas
+        $agora = Carbon::now();
+        $horaPost = new Carbon($post->created_at);
+        if($horaPost->diffInHours($agora) > 24){
+            return false;
+        }
+
+        // caso a senha passada seja igual a senha do post, permite a deleção
+        if($post->senhadel === $senhadel)
             return $post;
         else return false;
     }
@@ -475,19 +501,22 @@ class PostController extends Controller {
     public function deletaPost(Request $request){
         $request->siglaBoard = strip_tags(Purifier::clean($request->siglaBoard));
         $request->postId = strip_tags(Purifier::clean($request->postId));
+        $request->senhadel = strip_tags(Purifier::clean($request->senhadel));
 
         $validationRules = [
             'postId' => ['required', 'integer', 'max:999999999999'],
             'siglaBoard' => ['required', 'string', 'max:10'],
+            'senhadel' => ['required', 'string', 'max:25', 'min:6'],
         ]; 
         $validationRulesMessages = [
             'postId' => 'Requisição inválida',
+            'senhadel' => 'Senha de deleção inválida',
             'siglaBoard' => 'Requisição inválida'
         ];
 
         Validator::make($request->all(), $validationRules, $validationRulesMessages)->validate();
 
-        if($this->destroy($request->siglaBoard, $request->postId)){
+        if($this->destroy($request->siglaBoard, $request->postId, $request->senhadel)){
         return $this->redirecionaComMsg('post_deletado', 'Post ' . $request->postId . ' deletado', $request->headers->get('referer'));
         } else {
             return $this->redirecionaComMsg('ban', 'Não foi possível deletar este post', '/boards/' . $request->siglaBoard);
@@ -496,13 +525,13 @@ class PostController extends Controller {
     }
 
     // deleta uma postagem e dados relacionados a ele (links, arquivos)
-    public function destroy($siglaBoard, $postId) {
+    public function destroy($siglaBoard, $postId, $senhadel=null) {
         $board = $this->boardExiste($siglaBoard);
         if(!$board){
             abort(404);
         }
 
-        $post = $this->podeDeletarFio($postId);
+        $post = $this->podeDeletarPost($postId,$senhadel);
         if($post){
             
             if(!$post->lead_id){
@@ -691,6 +720,8 @@ class PostController extends Controller {
             'Erro ao postar. Você quer biscoito, amigo?',
             $request->headers->get('referer'));
         }
+
+        (new AnaoController)->atualizaUltimaSenhaUsada($anao, $post->senhadel);
         
         if($post->lead_id){
             $lead_fio = Post::find($post->lead_id);

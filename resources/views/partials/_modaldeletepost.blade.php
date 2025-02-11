@@ -13,6 +13,10 @@
         <div class="modal-body">
             <h1 class="free-text">Tem certeza que deseja deletar o post <span id="postIdModalSpan"></span>?</h1>
             <p class="free-text">Serão deletados todos seus anexos. Esta ação não pode ser desfeita.</p>
+            <div class="row">
+              <div class="col-sm-4"><p class="free-text">Senha de deleção deste post:</p></div>
+              <div class="col-sm-8"><input type="password" class="novo-post-form-item form-control" maxlength="25" minlength="6" value="{{$anao->ultima_senhadel_usada}}" placeholder="Senha para deletar" id="senhadel" name="senhadel"></div>
+            </div>
         </div>
         <div class="modal-footer">
           <div class="row">
