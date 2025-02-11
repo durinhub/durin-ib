@@ -11,8 +11,8 @@
         <input type="hidden" name="siglaBoard" value="{{ $siglaBoard }}">
         <input type="hidden" name="postId" id="postIdInputModal">
         <div class="modal-body">
-            <h1>Tem certeza que deseja deletar o post <span id="postIdModalSpan"></span>?</h1>
-            <p>Serão deletados todos seus anexos. Esta ação não pode ser desfeita.</p>
+            <h1 class="free-text">Tem certeza que deseja deletar o post <span id="postIdModalSpan"></span>?</h1>
+            <p class="free-text">Serão deletados todos seus anexos. Esta ação não pode ser desfeita.</p>
         </div>
         <div class="modal-footer">
           <div class="row">

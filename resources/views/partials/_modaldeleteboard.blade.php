@@ -7,8 +7,8 @@
         <h4 class="modal-title">Deletar board</h4>
       </div>
       <div class="modal-body">
-          <h1>Tem certeza que deseja deletar a board {{ $siglaBoard }}?</h1>
-          <p>Serão deletados todos seus posts e arquivos. Esta ação não pode ser desfeita.</p>
+          <h1 class="free-text">Tem certeza que deseja deletar a board {{ $siglaBoard }}?</h1>
+          <p class="free-text">Serão deletados todos seus posts e arquivos. Esta ação não pode ser desfeita.</p>
       </div>
       <div class="modal-footer">
         <a href="/boards/deleteboard/{{ $siglaBoard }}" class="btn btn-danger">Deletar board</a>
