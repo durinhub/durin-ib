@@ -30,5 +30,13 @@ class UsersSeeder extends Seeder
             'password' => '$2y$10$SVTK3/gdSA4fNNEmTHhDxe8zcOoZwuCkY0e9qgUvPR4NW8B.su9EG' // password 12345678
         ]);
         
+        \App\Models\User::create([
+            'id' => '3',
+            'name' => 'Other Adm 3',
+            'email' => 'e@f.g',
+            'locked' => true,
+            'password' => '$2y$10$SVTK3/gdSA4fNNEmTHhDxe8zcOoZwuCkY0e9qgUvPR4NW8B.su9EG' // password 12345678
+        ]);
+        
     }
 }
