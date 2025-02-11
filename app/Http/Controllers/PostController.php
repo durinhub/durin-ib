@@ -12,6 +12,7 @@ use App\Models\Report;
 use Carbon\Carbon;
 use Cache;
 use Auth;
+use Log;
 use App\Helpers\Funcoes;
 use App\Enums\ActivityLogClass;
 use App\Marmelos\Marmelos;
@@ -794,7 +795,8 @@ class PostController extends Controller {
             \DB::rollback();
             $arquivoController->fazRollbackArquivos($arquivosStatus);
             $this->postAutoIncrementRollback();
-
+            Log::error("PostController::store erro:");
+            Log::error($e->getMessage());
             $flashmsg = 'Erro ao criar nova postagem';
             return $this->redirecionaComMsg('erro_upload', $flashmsg, $request->headers->get('referer'));
 
