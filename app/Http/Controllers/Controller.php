@@ -190,8 +190,6 @@ class Controller extends BaseController {
             
             header("Set-Cookie: $this->nomeBiscoitoSessao=$valorBiscoito; httpOnly; path=/");
         }
-
-        return $anaoController->getAnaoByBiscoito($valorBiscoito);
     }
     
     protected function temBiscoitoAdmin(){

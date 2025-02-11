@@ -193,21 +193,6 @@ $(document).ready(function() {
         });
 
     }
-
-    $("#togglePassword").removeClass("glyphicon glyphicon-eye-open").addClass("glyphicon glyphicon-eye-close");
-        $("#togglePassword").click(function() {
-            const passwordInput = $("#senhadel");
-            const type = passwordInput.attr("type");
-
-            if (type === "password") {
-                passwordInput.attr("type", "text");
-                $("#togglePassword").removeClass("glyphicon glyphicon-eye-close").addClass("glyphicon glyphicon-eye-open");
-            } else {
-                passwordInput.attr("type", "password");
-                $("#togglePassword").removeClass("glyphicon glyphicon-eye-open").addClass("glyphicon glyphicon-eye-close");
-            }
-    });
-
 });
 
 </script>
