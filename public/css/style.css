@@ -344,3 +344,32 @@ span.vermelhotexto{
 .divAddCitacoes{
     display: inline;
 }
+
+.password-section {
+   position: relative;
+   display: inline-block;
+}
+
+.password-section .glyphicon-eye-open {
+   position: absolute;
+   top: 50%;
+   right: 22px;
+   transform: translateY(-50%);
+   cursor: pointer;
+}
+
+.password-section .glyphicon-eye-close {
+   position: absolute;
+   top: 50%;
+   right: 22px;
+   transform: translateY(-50%);
+   cursor: pointer;
+}
+
+.password-section .free-text {
+   position: absolute;
+   top: 50%;
+   right: 45px;
+   transform: translateY(-50%);
+   cursor: pointer;
+}
