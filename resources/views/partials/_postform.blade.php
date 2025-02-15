@@ -32,8 +32,18 @@
 
 <input type="text" class="novo-post-form-item form-control" maxlength="255" placeholder="Link(s) para vídeo(s) do youtube, separados por |" name="linkyoutube" id="linkyoutube">
 <textarea class="novo-post-form-item form-control" id="novo-post-conteudo" placeholder="Mensagem" rows="5" maxlength="26300" name="conteudo" @if(isset($requiredConteudo) && $requiredConteudo) required oninvalid="this.setCustomValidity('Por favor, fale algo para abrir um fio')" oninput="setCustomValidity('')" @endif></textarea>
+@php
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $shuffled = str_shuffle($characters);
+    $randomString = substr($shuffled, 0, 25);    
+@endphp
 <div class="row">
-    <div class="col-sm-12 password-section"><input type="password" class="novo-post-form-item form-control" maxlength="25" minlength="6" value="{{$anao->ultima_senhadel_usada}}" placeholder="Senha para deletar" id="senhadel" name="senhadel" required><span class="free-text">Senha para deletar</span><span id="togglePassword" class="glyphicon glyphicon-eye-open"></span></div>
+    <div class="col-sm-12 password-section">
+        <input type="password" class="novo-post-form-item form-control" maxlength="25" minlength="6" 
+            value="{{ ($anao->ultima_senhadel_usada ? $anao->ultima_senhadel_usada  : $randomString) }}" placeholder="Senha para deletar" id="senhadel" name="senhadel" required>
+        <span class="free-text">Senha para deletar</span>
+        <span id="togglePassword" class="glyphicon glyphicon-eye-open"></span>
+    </div>
 </div>
 <p style="margin-left: 15px;"><span class="free-text">Mime types: image/jpeg, image/png, image/gif, video/webm, video/mp4, audio/mpeg</span></p>
 <div class="row">
