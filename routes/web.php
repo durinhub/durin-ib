@@ -48,7 +48,8 @@ Route::middleware([xFrameOptionsHeader::class,VerifyHeaders::class])->group(func
         ->middleware('throttle:45,1,directory');
     
     Route::post('/posts', [PostController::class, 'store'])
-        ->name('posts.store');
+        ->name('posts.store')
+        ->middleware('throttle:1,1');
 
     Route::post('/report', [PostController::class, 'report'])
         ->name('posts.report');
