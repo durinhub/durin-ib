@@ -165,7 +165,9 @@ class ArquivoController extends Controller
                         $thumbnail = $nomeArquivo . ".thumb.jpg";
                         array_push($arquivosRollback, $thumbnail); // salva nomes dos arquivos caso tenha que fazer rollback          
 
-                        $this->generateThumbnail(Storage::disk('public')->path($nomeArquivo), 200, 200, 65);
+                        $imgSizeData = getimagesize(Storage::disk('public')->path($nomeArquivo));
+
+                        $this->generateThumbnail(Storage::disk('public')->path($nomeArquivo), ($imgSizeData[0]*0.2), ($imgSizeData[1]*0.2), 65);
                         $this->salvaThumb($post, $thumbnail, $arq->getClientOriginalName(), $spoilerVal, $this->getHashByPath($thumbnail));
 
                     }
