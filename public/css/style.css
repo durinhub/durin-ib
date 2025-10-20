@@ -373,3 +373,8 @@ span.vermelhotexto{
    transform: translateY(-50%);
    cursor: pointer;
 }
+
+.pula-linha{
+    display: flex; 
+    flex-direction: column;
+}

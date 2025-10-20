@@ -41,7 +41,7 @@
 <br>
 <br>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 pula-linha">
         <div class="div-arquivos-anexos">
         @include('partials._postarquivos', ['arquivos' => $post->arquivos, 'siglaBoard' => $siglaBoard])
 
