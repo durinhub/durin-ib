@@ -330,13 +330,18 @@ class PostController extends Controller {
         $post->lead_id = (strip_tags(Purifier::clean($request->insidepost)) === 'n' ? null : strip_tags(Purifier::clean($request->insidepost))); // caso o post seja dentro de um fio, define qual fio "pai" da postagem
         $post->board = strip_tags(Purifier::clean($request->siglaboard)); // board que o post pertence
         $request->conteudo = $this->setaRosaTextoTags($request->conteudo);
-        $post->conteudo =  $this->aplicaMarmelos(strip_tags(Purifier::clean($request->conteudo)));
+        if(Auth::check()){
+            $post->conteudo =  strip_tags(Purifier::clean($request->conteudo));
+            $post->modpost = $request->modpost && strip_tags(Purifier::clean($request->modpost)) === 'modpost';
+        } else {
+            $post->conteudo =  $this->aplicaMarmelos(strip_tags(Purifier::clean($request->conteudo)));
+            $post->modpost = false;
+        }
         $post->sage = strip_tags(Purifier::clean($request->sage)) === 'sage'; // define se o post foi sageado ou não
         $post->mostra_countryflag = strip_tags(Purifier::clean($request->mostra_countryflag)) === 'mostra_countryflag' || $post->board === 'int'; // define se mostra ou não a countryflag
         $post->pinado = false; // define se a thread está pinada, por padrão, não
         $post->trancado = false; // define se o fio pode receber novos posts ou não
         // flag "modpost" definido pelo mod
-        $post->modpost = $request->modpost && Auth::check() && strip_tags(Purifier::clean($request->modpost)) === 'modpost';
         $post->senhadel = strip_tags(Purifier::clean($request->senhadel));
         
         return $post;
