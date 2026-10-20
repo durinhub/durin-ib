@@ -78,6 +78,22 @@ class Controller extends BaseController {
             \DB::rollback();
         }
     }
+
+    public function geraBan45($ip, $motivo){
+        try{
+            \DB::beginTransaction();
+            $ban = new Ban;
+
+            $ban->ip = $ip;        
+            $ban->exp_date = Carbon::now()->addDays(45);
+            $ban->motivo = $motivo;
+
+            $ban->save(); 
+            \DB::commit();
+        } catch(\Exception $e){
+            \DB::rollback();
+        }
+    }
     
     protected function getDadosIp($ip){
         $url = "http://ip-api.com/json/{$ip}";

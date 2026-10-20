@@ -16,6 +16,7 @@ use App\Http\Controllers\ConfiguracaoController;
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ArquivoController;
+use App\Http\Controllers\BlacklistedStringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,6 +183,9 @@ Route::group(['middleware'=>['auth']], function(){
 
     Route::post('/gera_dados_mapa_de_posts', [PostController::class, 'geraDadosMapaDePosts'])
         ->name('posts.mapdata');
+
+    Route::post('/add_blacklist', [BlacklistedStringController::class, 'store'])
+        ->name('blacklist.store');
         
 });
 

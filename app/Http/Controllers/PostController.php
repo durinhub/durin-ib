@@ -9,6 +9,7 @@ use Redirect;
 use App\Models\Ytanexo;
 use App\Models\Anao;
 use App\Models\Report;
+use App\Models\BlacklistedString;
 use Carbon\Carbon;
 use Cache;
 use Auth;
@@ -381,6 +382,20 @@ class PostController extends Controller {
         \DB::statement("ALTER TABLE posts AUTO_INCREMENT=$maxId");
     }
 
+    private function verificaPostBlacklistedStrs(Request $request){
+
+        foreach(BlacklistedString::all() as $word) {
+            if(str_contains(strtolower($request->conteudo), strtolower($word->conteudo)) || 
+                str_contains(strtolower($request->assunto), strtolower($word->conteudo))
+                ){
+                $this->geraBan45($request->ip(), "Conteúdo não permitido");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // verifica se ultrapassou o nro máximo de posts para a board [configuracaos.num_max_fios]
     protected function verificaLimitePosts($siglaBoard){
         $posts = Post::where('pinado', '=', false)
@@ -701,6 +716,11 @@ class PostController extends Controller {
              $msgBan,
             $request->headers->get('referer'));
         }
+
+        if(!$this->verificaPostBlacklistedStrs($request)){
+            return $this->redirecionaComMsg('erro_upload', "Conteúdo inválido, post rejeitado", $request->headers->get('referer'));
+        }
+
         $arquivos = $request->file('arquivos'); // salva os dados dos arquivos na variável $arquivos
         $links = $this->getLinksYoutube($request); // pega links do youtube se tiverem
         
