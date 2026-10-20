@@ -282,13 +282,12 @@ $(document).ready(function(){
         }
     });
 
+    // add referencia do post citante ao post citado
     $('.nro-post-ref').each((index, element) => {
-        teste = $(element).parent();
         idPostCitado = $(element).data('target-post');
         idPostCitante = $(element).parent().parent().parent().parent().parent().attr('id');
 
         divPostCitado = $(`#${idPostCitado}`);
-        localAddRef = divPostCitado.children(`#addCitacoes${idPostCitado}`)[0];
 
         addCitacao = `<a class="nro-post-ref" href="#${idPostCitante}" data-target-post="${idPostCitante}">&gt;&gt;${idPostCitante}</a>`
         $(addCitacao).appendTo(`#addCitacoes${idPostCitado}`);
