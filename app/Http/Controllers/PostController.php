@@ -109,6 +109,22 @@ class PostController extends Controller {
             abort(404);
         }
     }
+
+    public function recentPosts(){
+        Funcoes::consolelog('PostController::recentPosts');
+        if(!(Auth::check() && Auth::user()->canDo(AdminRightsEnum::ViewRecentPosts))){
+            Funcoes::consolelog('PostController::recentPosts erro: usuário não tem o direito ViewRecentPosts');
+            abort(403);
+        }
+
+        $this->logAuthActivity("Acessou a página de posts recentes", ActivityLogClass::Info);
+
+        $posts = Post::orderBy('created_at', 'desc')->take(20)->get();
+
+        return view('pages.recent20s')
+            ->withPosts($posts)
+            ->withSecretas(true);
+    }
     
     public static function pegaReports(){
         $chave = 'reports';

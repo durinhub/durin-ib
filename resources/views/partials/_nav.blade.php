@@ -19,6 +19,9 @@
         @if(Auth::check()) 
         / <a href="/admin">Admin</a>
         @endif
+        @if(Auth::check() && Auth::user()->canDo(App\Enums\AdminRightsEnum::ViewRecentPosts)) 
+        / <a href="/recent20s">Recent</a>
+        @endif
         @if(!App::isProduction() && !Auth::check()) 
         / <a href="/login">Login</a>
         @elseif(!App::isProduction() && Auth::check()) 

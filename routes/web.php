@@ -175,6 +175,9 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('/activitylogs', [ActivityLogController::class, 'getActivityLogsPage'])
         ->name('activitylogs.list');
 
+    Route::get('/recent20s', [PostController::class, 'recentPosts'])
+        ->name('posts.recent20s');
+
     Route::post('/aplica_filtros_posts', [PostController::class, 'aplicaFiltros'])
         ->name('posts.filters');
 

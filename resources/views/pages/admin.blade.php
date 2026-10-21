@@ -67,6 +67,9 @@
             @if(Auth::user()->canDo(App\Enums\AdminRightsEnum::SeeActivityLogs))
                         <li><a href="{{ route('activitylogs.list') }}"><button type="button" class="btn btn-success">Logs de atividade</button></a></li>
             @endif  
+            @if(Auth::user()->canDo(App\Enums\AdminRightsEnum::ViewRecentPosts))
+                        <li><a href="{{ route('posts.recent20s') }}"><button type="button" class="btn btn-primary">Posts recentes</button></a></li>
+            @endif  
                         <li>
                         <li><a href="/logout"><button type="button" class="btn btn-danger">Logout</button></a></li>
                         </li>
