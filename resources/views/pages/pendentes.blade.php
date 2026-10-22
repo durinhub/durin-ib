@@ -40,7 +40,9 @@
                             <img class="img-responsive img-thumbnail" src="{{ \Storage::url($arq->filename) . ".thumb.jpg" }}" width="100px" height="100px">
                         </a>
                     @elseif($arq->mime === 'video/mp4' || $arq->mime === 'video/webm')
-                        <img class="img-responsive vid-thumbnail" src="{{ \Storage::url($arq->filename) . ".thumb.png" }}" data-type="{{ $arq->mime }}" width="100px" height="100px">
+                        <video controls class="img-responsive vid-thumbnail" width="250px" height="250px">
+                            <source src="{{ \Storage::url($arq->filename) }}" type="{{ $arq->mime }}"/>
+                        </video>
                     @elseif($arq->mime === 'audio/mpeg')
                         <audio controls>
                             <source src="/storage/{{ $arq->filename }}" type="audio/mpeg">
