@@ -47,6 +47,7 @@ class PostController extends Controller {
             return Cache::get($chave);
             
         $posts = Controller::transformaDatasPortugues(Post::with(['arquivos', 'ytanexos', 'anao', 'ban', 'board'])
+        ->aprovado()
         ->orderBy('pinado', 'desc')
         ->orderBy('updated_at', 'desc')
         ->where('board', $siglaBoard)->where('lead_id', null)->paginate(ConfiguracaoController::getAll()->num_posts_paginacao));
@@ -61,6 +62,7 @@ class PostController extends Controller {
             return Cache::get($chave);
             
         $subposts = Post::with(['arquivos', 'ytanexos', 'anao', 'ban', 'board'])
+                ->aprovado()
                 ->orderBy('created_at', 'asc')
                 ->where('board', $siglaBoard)
                 ->where('lead_id', '<>', null)->get();
@@ -74,8 +76,11 @@ class PostController extends Controller {
         if(Cache::has($chave))
             return Cache::get($chave);
             
-        $posts = Post::with(['arquivos', 'ytanexos', 'anao', 'ban', 'board'])->orderBy('created_at', 'asc')->where('id', $thread)->orWhere('lead_id', $thread)->get();
-        $posts = Controller::transformaDatasPortugues($posts);
+        $posts = Controller::transformaDatasPortugues(Post::with(['arquivos', 'ytanexos', 'anao', 'ban', 'board'])
+        ->aprovado()
+        ->orderBy('created_at', 'asc')
+        ->where(function($q) use ($thread){ $q->where('id', $thread)->orWhere('lead_id', $thread); })
+        ->get());
         Cache::forever($chave, $posts);
         return $posts;
     }
@@ -124,6 +129,48 @@ class PostController extends Controller {
         return view('pages.recent20s')
             ->withPosts($posts)
             ->withSecretas(true);
+    }
+
+    public function pendentes(){
+        Funcoes::consolelog('PostController::pendentes');
+        if(!(Auth::check() && Auth::user()->canDo(AdminRightsEnum::AprovarPosts))){
+            Funcoes::consolelog('PostController::pendentes erro: usuário não tem o direito AprovarPosts');
+            abort(403);
+        }
+
+        $this->logAuthActivity("Acessou a página de posts pendentes de aprovação", ActivityLogClass::Info);
+
+        $posts = Post::where('aprovado', false)->with('arquivos')->orderBy('created_at', 'desc')->get();
+
+        return view('pages.pendentes')
+            ->withPosts($posts)
+            ->withSecretas(true);
+    }
+
+    public function aprovarPost(Request $request, $post_id){
+        Funcoes::consolelog('PostController::aprovarPost');
+        if(!(Auth::check() && Auth::user()->canDo(AdminRightsEnum::AprovarPosts))){
+            Funcoes::consolelog('PostController::aprovarPost erro: usuário não tem o direito AprovarPosts');
+            abort(403);
+        }
+
+        $post = Post::find($post_id);
+        if(!$post){
+            abort(404);
+        }
+
+        $post->aprovado = true;
+        $post->save();
+
+        if(!$this->limpaCachePosts($post->board, $post->lead_id === null ? $post->id : $post->lead_id)){
+            Funcoes::consolelog('PostController::aprovarPost erro ao limpar cache dos posts');
+        }
+
+        $this->logAuthActivity("Aprovou o post número " . $post->id . " da board /" . $post->board . "/", ActivityLogClass::Info);
+
+        return $this->redirecionaComMsg('sucesso_admin',
+        'Post número ' . $post->id . ' aprovado',
+        '/pendentes');
     }
     
     public static function pegaReports(){
@@ -751,6 +798,13 @@ class PostController extends Controller {
         
         $post = $this->getObjetoPost($request); // transforma os campos do form da request num objeto Post
         
+        // posts com midia (arquivos) ficam pendentes de aprovacao ate um admin aprovar
+        if(!empty($arquivos)){
+            $post->aprovado = false;
+        } else {
+            $post->aprovado = true;
+        }
+        
         // verifica se tem biscoito para postar
         $anao = $this->verificaBiscoitoPostar();
         if($anao){
@@ -827,7 +881,12 @@ class PostController extends Controller {
             \DB::commit();
 
             // prepara mensagem de aviso de post criado com sucesso
-            $flashmsg = $post->lead_id ? 'Post número ' . $post->id . ' criado' : 'Post número <a target="_blank" href="/' . $post->board . '/' . $post->id . '">' . $post->id . '</a> criado';
+            $flashmsg = "";
+            if($post->aprovado === true){
+                $flashmsg = $post->lead_id ? 'Post número ' . $post->id . ' criado' : 'Post número <a target="_blank" href="/' . $post->board . '/' . $post->id . '">' . $post->id . '</a> criado';
+            } else {
+                $flashmsg = 'Post número ' . $post->id . ' criado e pendente de aprovação.';
+            }
             return $this->redirecionaComMsg('post_criado', $flashmsg,
             $request->headers->get('referer'));
 

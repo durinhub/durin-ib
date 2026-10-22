@@ -1,5 +1,6 @@
 <div class="container-fluid">
 @foreach($posts as $post)
+@if($post->aprovado === false) @continue @endif
 @if($post->lead_id === NULL)
 <div id="{{ $post->id }}" class="fio" data-sigla-board="{{ $siglaBoard }}">
     @if($post->pinado) <span class="glyphicon glyphicon-pushpin"></span> @endif 

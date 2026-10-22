@@ -1,4 +1,5 @@
 @foreach($posts as $ind=>$post)
+@if($post->aprovado === false) @continue @endif
 @if($ind === 0) <div id="{{ $post->id }}" class="fio" data-sigla-board="{{ $siglaBoard }}">
 @else <div id="{{ $post->id }}" class="fio-subpost"> @endif
 

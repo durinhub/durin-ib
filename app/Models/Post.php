@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = 'posts';
+
+    protected $casts = [
+        'aprovado' => 'boolean',
+    ];
+
+    // Posts aprovados (visíveis publicamente)
+    public function scopeAprovado($query)
+    {
+        return $query->where('aprovado', true);
+    }
     
     public function arquivos(){
         return $this->hasMany('App\Models\Arquivo');

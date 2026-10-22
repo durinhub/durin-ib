@@ -70,6 +70,9 @@
             @if(Auth::user()->canDo(App\Enums\AdminRightsEnum::ViewRecentPosts))
                         <li><a href="{{ route('posts.recent20s') }}"><button type="button" class="btn btn-primary">Posts recentes</button></a></li>
             @endif  
+            @if(Auth::user()->canDo(App\Enums\AdminRightsEnum::AprovarPosts))
+                        <li><a href="{{ route('pendentes') }}"><button type="button" class="btn btn-warning">Posts pendentes de aprovação</button></a></li>
+            @endif  
                         <li>
                         <li><a href="/logout"><button type="button" class="btn btn-danger">Logout</button></a></li>
                         </li>

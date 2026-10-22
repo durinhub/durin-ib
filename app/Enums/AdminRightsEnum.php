@@ -26,4 +26,5 @@ enum AdminRightsEnum: int {
     case GeneratePostMapData = 20;
     case CreateBlacklistedStrings = 21;
     case ViewRecentPosts = 22;
+    case AprovarPosts = 23;
 }

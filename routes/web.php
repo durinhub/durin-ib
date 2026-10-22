@@ -178,6 +178,13 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('/recent20s', [PostController::class, 'recentPosts'])
         ->name('posts.recent20s');
 
+    Route::get('/pendentes', [PostController::class, 'pendentes'])
+        ->name('pendentes');
+
+    Route::post('/pendentes/{post_id}/aprovar', [PostController::class, 'aprovarPost'])
+        ->where('post_id', '[0-9]+')
+        ->name('pendentes.aprovar');
+
     Route::post('/aplica_filtros_posts', [PostController::class, 'aplicaFiltros'])
         ->name('posts.filters');
 
