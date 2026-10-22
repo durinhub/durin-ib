@@ -40,6 +40,7 @@
 <div class="text-center">
     <a href="/admin"><button type="button" class="btn btn-primary">Voltar para o admin</button></a>
 </div>
+@include('partials._pagereloaderscript')
 @endsection
 
 @section('styles')
