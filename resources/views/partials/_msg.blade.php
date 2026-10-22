@@ -37,7 +37,7 @@
 @if (Session::has('ban'))
 
     <div class="alert alert-danger" role="alert">
-        <p><strong class="msg-strong">Erro:</strong> {{ Session::get('ban') }}</p>
+        <p><strong class="msg-strong">Aviso:</strong> {{ Session::get('ban') }}</p>
     </div>
 
 @endif
