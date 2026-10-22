@@ -21,3 +21,4 @@ public/*.png
 todo
 app/Marmelos/Marmelos.php
 composer.lock
+serverconf/
