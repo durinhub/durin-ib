@@ -6,8 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9",
+        "laravel/framework": "^13.0",
+        "laravel/tinker": "^3",
         "laravel/ui": "^4.5",
         "mews/captcha": "^3.4",
         "mews/purifier": "^3.4",
