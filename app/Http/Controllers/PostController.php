@@ -30,6 +30,7 @@ class PostController extends Controller {
         $query = Post::with(['arquivos', 'ytanexos'])
             ->orderBy('updated_at', 'desc')
             ->where('lead_id', null)
+            ->aprovado()
             ->join('boards','posts.board', '=', 'boards.sigla');
 
         if(!$secretas)
