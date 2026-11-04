@@ -194,8 +194,15 @@ class PagesController extends Controller
     public function getArquivo($filename){
         Funcoes::consolelog('PagesController::getArquivo ' . $filename);
         $filename = strip_tags(Purifier::clean($filename));
-        $arq = Arquivo::where('filename', '=', $filename)->get()->count();
+        $arq = Arquivo::where('filename', '=', $filename)->first();
         if(Storage::disk('public')->has($filename) && $arq){
+            if(!(Auth::check() && Auth::user()->canDo(AdminRightsEnum::AprovarPosts))){
+                $post = $arq->post;
+                if(!$post || $post->aprovado === false){
+                    Funcoes::consolelog('PagesController::getArquivo Arquivo de post não aprovado');
+                    abort(404);
+                }
+            }
             $fullpath = "app/public/" . $filename;
             return response()->download(storage_path($fullpath), null, [], null);
         } else 
